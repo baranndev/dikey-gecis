@@ -1,7 +1,6 @@
 // Tercih listesi: durum hesabı, paylaşım bağlantısı, uyarı penceresi, PDF (karekodlu), kopyalama
 const PT=['SAY','EA','SÖZ'];
 const PKEY={SAY:'say',EA:'ea','SÖZ':'soz'};
-const PBY=Object.fromEntries(D.P.map(p=>[p[3],p]));
 const parseScore=v=>{if(v==null||v==='')return null;const n=parseFloat(String(v).replace(',','.'));return isFinite(n)&&n>0&&n<=600?n:null};
 const STATUS={
   ok:{t:'Tabanın üstünde',d:'Puanın, 2026 yerleştirmesindeki en küçük puanın üstünde.'},
@@ -67,11 +66,6 @@ function confirmWarning(actionLabel){
     w.addEventListener('click',e=>{if(e.target===w)close(false)});
     w.addEventListener('keydown',e=>{if(e.key==='Escape')close(false)});
   });
-}
-function toast(msg){
-  let t=document.querySelector('.toast');
-  if(!t){t=document.createElement('div');t.className='toast';t.setAttribute('role','status');document.body.appendChild(t)}
-  t.textContent=msg;t.classList.add('in');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('in'),2600);
 }
 async function copyLink(url){
   try{await navigator.clipboard.writeText(url);toast('Bağlantı kopyalandı.');return true}

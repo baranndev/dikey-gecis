@@ -6,6 +6,21 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Dikey Geçiş Rehberi</title>
 <meta name="description" content="Ön lisans bölümüne göre 2026 DGS ile geçilebilecek lisans programları, kontenjanlar ve puanlar.">
+<link rel="canonical" href="https://baranndev.github.io/dikey-gecis/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Dikey Geçiş Rehberi">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="Dikey Geçiş Rehberi">
+<meta property="og:description" content="Ön lisans bölümüne göre 2026 DGS ile geçilebilecek lisans programları, kontenjanlar ve puanlar.">
+<meta property="og:url" content="https://baranndev.github.io/dikey-gecis/">
+<meta property="og:image" content="https://baranndev.github.io/dikey-gecis/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dikey Geçiş Rehberi: ön lisans bölümüne göre geçilebilecek lisans programları">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dikey Geçiş Rehberi">
+<meta name="twitter:description" content="Ön lisans bölümüne göre 2026 DGS ile geçilebilecek lisans programları, kontenjanlar ve puanlar.">
+<meta name="twitter:image" content="https://baranndev.github.io/dikey-gecis/og.png">
 <meta name="theme-color" content="#c23a57">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
@@ -13,6 +28,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Dikey Geçiş">
+<script>try{var t=localStorage.getItem('dg-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -83,6 +99,14 @@
 .fact p{margin:0;color:var(--soft);font-size:15px}
 
 .cta-band{margin-top:112px}
+.tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.tool{display:flex;flex-direction:column;gap:8px;padding:22px;border-radius:16px;background:var(--sheet);border:1px solid var(--rule);text-decoration:none;transition:border-color .15s,transform .15s,box-shadow .15s}
+.tool:hover{border-color:var(--form);transform:translateY(-2px);box-shadow:var(--shadow)}
+.tool .ti{width:40px;height:40px;border-radius:12px;background:var(--form-soft);color:var(--form);display:grid;place-items:center;font:700 18px var(--f-mono)}
+.tool b{font:600 18px var(--f-display)}
+.tool p{margin:0;color:var(--soft);font-size:14.5px}
+@media (max-width:960px){.tools{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.tools{grid-template-columns:minmax(0,1fr)}}
 .tl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:56px;align-items:center;background:var(--sheet);border:1px solid var(--rule);border-radius:24px;padding:clamp(24px,4vw,48px)}
 .tl h2{margin:14px 0 14px}
 .tli{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:10px;font-size:15px;color:var(--soft)}
@@ -124,14 +148,16 @@
 <body>
 <header class="nav"><div class="wrap">
   <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
-  <nav aria-label="Ana menü">
-    <a href="index.html#nasil" class="hide-sm">Nasıl çalışır</a>
-    <a href="index.html#populer" class="hide-sm">Popüler bölümler</a>
-    <a href="index.html#kaynak" class="hide-sm">Kaynak</a>
-    <a class="btn ghost sm" href="tercih.html">Tercih listesi</a>
+  <nav aria-label="Ana menü" class="links"><a href="bolumler.html">Bölümler</a><a href="kesfet.html">Keşfet</a><a href="harita.html">Harita</a><a href="karsilastir.html">Karşılaştır</a></nav>
+  <div class="nact">
+    <button type="button" class="iconbtn" id="themebtn" aria-label="Karanlık modu aç/kapat"><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+    <a class="btn ghost sm hide-xs" href="tercih.html">Tercih listesi</a>
     <a class="btn primary sm" href="sorgula.html">Sorgula</a>
-  </nav>
-</div></header>
+    <button type="button" class="iconbtn menubtn" id="menubtn" aria-label="Menüyü aç" aria-expanded="false" aria-controls="mmenu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</div>
+<nav class="mmenu" id="mmenu" aria-label="Mobil menü" hidden><div class="wrap"><a href="index.html">Ana sayfa</a><a href="sorgula.html">Program sorgula</a><a href="tercih.html">Tercih listesi</a><a href="bolumler.html">Bölümler</a><a href="kesfet.html">Keşfet</a><a href="harita.html">Harita</a><a href="karsilastir.html">Karşılaştır</a></div></nav>
+</header>
 
 <main>
 <section class="hero"><div class="wrap">
@@ -173,6 +199,16 @@
   </div>
 </div></section>
 
+<section class="sec" id="araclar"><div class="wrap">
+  <div class="sh"><div><span class="eyebrow">Araçlar</span><h2>Keşfetmenin başka yolları.</h2></div></div>
+  <div class="tools">
+    <a class="tool" href="harita.html"><span class="ti">◎</span><b>Türkiye haritası</b><p>Hangi ilde kaç program var? Bölümüne göre il il gör.</p></a>
+    <a class="tool" href="kesfet.html"><span class="ti">↓</span><b>Boş kalanlar ve rekorlar</b><p>2026'da kontenjanı dolmayanlar, en düşük ve en yüksek tabanlar.</p></a>
+    <a class="tool" href="karsilastir.html"><span class="ti">⇄</span><b>Karşılaştır</b><p>4 programa kadar yan yana: kontenjan, puan, şehir, koşul.</p></a>
+    <a class="tool" href="bolumler.html"><span class="ti">≡</span><b>Tüm ön lisans bölümleri</b><p>852 bölümün her biri için ayrı rehber sayfası.</p></a>
+  </div>
+</div></section>
+
 <section class="sec" id="tercih"><div class="wrap"><div class="tl">
   <div><span class="eyebrow">Yeni · Tercih listesi</span><h2>Puanını yaz, listeni hazırla, paylaş.</h2>
   <p class="lead">DGS puanlarını, istediğin illeri ve üniversite türünü gir. Puanına uyan programları 2026 tabanlarıyla karşılaştır, 30 tercihe kadar listeni oluştur.</p>
@@ -198,6 +234,7 @@
       <p>Ön lisans bölümüne göre 2026 DGS ile geçilebilecek lisans programlarını, kontenjanlarını ve yerleştirme puanlarını tek yerde toplayan bağımsız bir bilgi sayfası.</p>
       <p><b>Kaynak:</b> ÖSYM 2026-DGS Tercih Kılavuzu Tablo-1 (Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Lisans Programları), Tablo-2 (Ön Lisans Mezuniyet Alanlarına Göre Dikey Geçiş Yapılabilecek Lisans Programları) ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
       <p>Program koşulları ("Bakınızlar" numaraları) için kılavuzdaki açıklamalara bakılmalıdır.</p>
+      <nav class="flinks" aria-label="Site haritası"><a href="sorgula.html">Program sorgula</a><a href="tercih.html">Tercih listesi</a><a href="bolumler.html">Tüm ön lisans bölümleri</a><a href="kesfet.html">Keşfet</a><a href="harita.html">Harita</a><a href="karsilastir.html">Karşılaştır</a></nav>
     </div>
     <div class="legal" role="note"><h3>Yasal uyarı</h3><ul>
       <li>Bu sayfadaki veriler ÖSYM'nin kamuya açık yayımladığı PDF belgelerinden derlenmiştir. Sayfa ÖSYM ile bağlantılı değildir ve resmi bir kaynak değildir.</li>
@@ -212,6 +249,7 @@
 </div></footer>
 <script src="assets/data.js"></script>
 <script src="assets/common.js"></script>
+<script src="assets/ui.js"></script>
 <script>
 (function(){
   const go=k=>{location.href=queryUrl('sorgula.html',{o:k})};

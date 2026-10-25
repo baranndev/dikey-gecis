@@ -77,7 +77,8 @@ function autocomplete(input,list,onPick){
   document.addEventListener('click',e=>{if(!list.contains(e.target)&&e.target!==input)close()});
   function pick(x){input.value=x.o[1];close();onPick(x)}
 }
-addEventListener('scroll',()=>{const n=document.querySelector('.nav');if(n)n.classList.toggle('scrolled',scrollY>8)},{passive:true});
-if('serviceWorker' in navigator && location.protocol==='https:' && location.hostname.endsWith('github.io')){
-  addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-}
+const PBY=Object.fromEntries(D.P.map(p=>[p[3],p]));
+const progUrl=c=>'program.html?k='+c;
+const uniShort=u=>u.replace(/ ÜNİVERSİTESİ.*$/,'').replace(/(^|[\s-])([^\s-])([^\s-]*)/g,(m,a,b,c)=>a+b+c.toLocaleLowerCase('tr'));
+// bir lisans programına hangi ön lisans bölümlerinden geçilebilir
+function sourcesOf(p){return D.ON.filter(o=>o[2].includes(p[7])||(p[13]&&o[3].includes(p[7])))}
