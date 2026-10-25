@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#c23a57">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dikey Geçiş">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Dikey Geçiş Bilişim Rehberi</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="2026 DGS: bilgisayar, yazılım, bilişim ve istatistik programlarının kontenjanları ile en küçük ve en büyük puanları.">
@@ -267,6 +275,7 @@ document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{S.t=b.dataset
 document.getElementById('q').oninput=e=>{S.q=low(e.target.value.trim());render()};
 document.getElementById('sort').onchange=e=>{S.sort=e.target.value;render()};
 render();
+if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
 </script>
 
 </body>
