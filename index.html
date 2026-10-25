@@ -94,7 +94,34 @@ h2{font:700 clamp(24px,3vw,32px)/1.1 var(--f-display);letter-spacing:-.015em;mar
 .note p{margin:0;color:var(--soft);font-size:14.5px}
 
 /* explorer */
-.tools{display:flex;flex-direction:column;gap:12px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);padding-block:12px;border-bottom:1px solid var(--rule)}
+.tools{display:flex;flex-direction:column;gap:16px;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r);padding:20px}
+.step{display:flex;flex-direction:column;gap:10px}
+.step>label,.step>.lbl{font:500 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.go{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding-top:4px;border-top:1px dashed var(--rule)}
+.btn{border:0;background:var(--form);color:#fff;font:600 16px var(--f-display);padding:12px 28px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:transform .15s ease,opacity .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn.dirty{box-shadow:0 0 0 4px var(--form-soft)}
+.hint{font-size:13.5px;color:var(--soft)}
+.loading{display:flex;flex-direction:column;align-items:center;gap:18px;padding:56px 0;color:var(--soft)}
+.loading .lb2{font:500 15px var(--f-display);color:var(--ink)}
+.eq{display:flex;flex-direction:column;gap:8px;width:min(260px,70%)}
+.eq span{display:block;height:8px;border-radius:4px;background:var(--track);position:relative;overflow:hidden}
+.eq span::after{content:"";position:absolute;top:0;bottom:0;border-radius:4px;background:var(--form);animation:sweep 1.1s ease-in-out infinite alternate}
+.eq span:nth-child(2)::after{background:var(--blue);animation-delay:.18s}
+.eq span:nth-child(3)::after{animation-delay:.36s}
+@keyframes sweep{from{left:0;width:25%}to{left:55%;width:45%}}
+@media (prefers-reduced-motion:reduce){.eq span::after{animation:none;left:20%;width:50%}}
+.list .uni{animation:rise .35s ease both}
+@keyframes rise{from{opacity:.0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.list .uni{animation:none}}
+.start{padding:44px 0;text-align:center;color:var(--soft);display:flex;flex-direction:column;gap:6px;align-items:center}
+.start b{font:600 18px var(--f-display);color:var(--ink)}
+.res{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding-top:24px}
+.res b{font:600 18px var(--f-display)}
+.legal{margin-top:8px;padding:16px 18px;border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet);display:grid;gap:8px}
+.legal h3{margin:0;font:600 14px var(--f-display);color:var(--ink)}
+.legal ul{margin:0;padding-left:18px;display:grid;gap:4px}
 .trow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;padding:3px;background:var(--sheet)}
 .seg button{border:0;background:none;padding:6px 14px;border-radius:999px;cursor:pointer;font-weight:500;font-size:14px}
@@ -108,7 +135,7 @@ h2{font:700 clamp(24px,3vw,32px)/1.1 var(--f-display);letter-spacing:-.015em;mar
 .chip.all::before{display:none}
 input[type=search],select{background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:8px 12px;font-size:14px;min-width:0}
 input[type=search]{flex:1 1 220px}
-.count{font:12px var(--f-mono);color:var(--soft);margin-left:auto}
+.count{font:12px var(--f-mono);color:var(--soft)}
 
 .list{margin-top:8px}
 .uni{padding-top:22px}
@@ -147,7 +174,8 @@ footer p{margin:0;max-width:80ch}
   .p{grid-template-columns:minmax(0,1fr) auto;gap:8px 12px}
   .p .cd{order:3}
   .p .sc{grid-column:1/-1;order:4}
-  .count{margin-left:0}
+  .tools{padding:16px}
+  .btn{width:100%;justify-content:center}
 }
 @media (prefers-reduced-motion:no-preference){
   .bar .rg{transition:left .35s ease,width .35s ease}
@@ -178,22 +206,30 @@ footer p{margin:0;max-width:80ch}
 </div></section>
 
 <section id="liste"><div class="wrap">
-  <div class="sh"><div><h2>Tüm programlar</h2><p>Program kodunu ÖSYM tercih ekranında kullanabilirsin. Çubuk, programa yerleşenlerin en küçük ve en büyük puanını aynı ölçekte gösterir.</p></div></div>
-  <div class="tools">
-    <div class="trow">
+  <div class="sh"><div><h2>Program sorgula</h2><p>İlgilendiğin bölümleri seç ve Sorgula'ya bas. Sonuçlarda her programın kodu, kontenjanı ve yerleşenlerin en küçük ve en büyük puanı yer alır.</p></div></div>
+  <form class="tools" id="qform">
+    <div class="step"><span class="lbl">1 · Bölümleri seç</span><div class="chips" id="chips"></div></div>
+    <div class="step"><span class="lbl">2 · Üniversite türü</span>
       <div class="seg" role="group" aria-label="Üniversite türü">
-        <button id="t-all" data-t="all" aria-pressed="true">Tümü</button><button id="t-D" data-t="D" aria-pressed="false">Devlet</button><button id="t-V" data-t="V" aria-pressed="false">Vakıf · burslu</button>
-      </div>
-      <input type="search" id="q" placeholder="Üniversite, şehir veya program kodu" aria-label="Ara">
-      <select id="sort" aria-label="Sıralama"><option value="uni">Üniversite (A–Z)</option><option value="min">Taban puan (yüksekten)</option><option value="minA">Taban puan (düşükten)</option><option value="k">Kontenjan (çoktan)</option></select>
-    </div>
-    <div class="trow"><div class="chips" id="chips"></div><span class="count" id="count"></span></div>
-  </div>
+        <button type="button" id="t-all" data-t="all" aria-pressed="true">Tümü</button><button type="button" id="t-D" data-t="D" aria-pressed="false">Devlet</button><button type="button" id="t-V" data-t="V" aria-pressed="false">Vakıf · burslu</button>
+      </div></div>
+    <div class="step"><span class="lbl">3 · İsteğe bağlı</span>
+      <div class="trow"><input type="search" id="q" placeholder="Üniversite, şehir veya program kodu" aria-label="Ara">
+      <select id="sort" aria-label="Sıralama"><option value="uni">Üniversite (A–Z)</option><option value="min">Taban puan (yüksekten)</option><option value="minA">Taban puan (düşükten)</option><option value="k">Kontenjan (çoktan)</option></select></div></div>
+    <div class="go"><button type="submit" class="btn" id="go">Sorgula</button><span class="hint" id="hint">En az bir bölüm seç.</span></div>
+  </form>
   <div class="list" id="list"></div>
 </div></section>
 </main>
 
-<footer><div class="wrap" style="display:grid;gap:8px">
+<footer><div class="wrap" style="display:grid;gap:12px">
+  <div class="legal" role="note"><h3>Yasal uyarı</h3><ul>
+    <li>Bu sayfadaki veriler ÖSYM'nin kamuya açık yayımladığı PDF belgelerinden derlenmiştir. Sayfa ÖSYM ile bağlantılı değildir ve resmi bir kaynak değildir.</li>
+    <li>Veriler otomatik olarak aktarılmıştır; aktarım sırasında hata veya eksiklik olabilir. Kesin doğruluk garanti edilmez.</li>
+    <li>Buradaki bilgiler yalnızca genel bilgilendirme amaçlıdır. Tercih, başvuru veya başka bir resmi işlemde veri olarak kullanılmamalıdır.</li>
+    <li>Geçmiş yılın en küçük ve en büyük puanları sonraki yerleştirmelerin sonucunu göstermez.</li>
+    <li>Kontenjan, puan ve başvuru koşullarının güncel ve resmi hâli için mutlaka <a href="https://www.osym.gov.tr" target="_blank" rel="noopener">osym.gov.tr</a> adresindeki kılavuz ve tabloları kontrol et. Bu sayfanın kullanımından doğabilecek sonuçlardan sayfa sahibi sorumlu tutulamaz.</li>
+  </ul></div>
   <p>Kaynak: ÖSYM, Tablo-1 Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Yükseköğretim Lisans Programları ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
   <p>KKTC üniversiteleri listede yok. Anadolu Üniversitesi YBS (Açıköğretim) 1000 kontenjanlıdır ve devlet YBS kontenjanının büyük kısmını oluşturur. Tercih yapmadan önce ÖSYM kılavuzundaki "Bakınızlar" koşullarını program koduyla kontrol et.</p>
 </div></footer>
@@ -210,7 +246,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const f1=v=>v.toLocaleString('tr',{minimumFractionDigits:1,maximumFractionDigits:1});
 const f3=v=>v==null?'–':v.toLocaleString('tr',{minimumFractionDigits:3,maximumFractionDigits:3});
 const tr=n=>n.toLocaleString('tr');
-const S={t:'all',c:new Set(CATS.map(c=>c[0])),q:'',sort:'uni'};
+const S={t:'all',c:new Set(),q:'',sort:'uni'};let ran=false,timer=null;
 
 // hero figures
 (function(){
@@ -234,17 +270,18 @@ function rangeBar(cls,a,b,label){
     return `<button class="mrow" data-c="${c}" aria-label="${esc(n)} programlarını listele"><div class="mname"><b>${esc(n)}</b><small>${pt} · ${d[2]+v[2]} program</small></div><div class="bars">${rangeBar('d',d[0],d[1],lab(d))}${rangeBar('v',v[0],v[1],lab(v))}</div></button>`;
   });
   const m=document.getElementById('map');m.innerHTML=rows.join('');
-  m.querySelectorAll('.mrow').forEach(b=>b.onclick=()=>{S.c=new Set([b.dataset.c]);syncChips();render();document.getElementById('liste').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})});
+  m.querySelectorAll('.mrow').forEach(b=>b.onclick=()=>{S.c=new Set([b.dataset.c]);syncChips();document.getElementById('liste').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});query()});
 })();
 
 // chips
 const chips=document.getElementById('chips');
-chips.innerHTML=`<button class="chip all" id="c-all">Hepsi</button>`+CATS.map(([c,n])=>`<button class="chip" id="c-${c}" data-c="${c}" aria-pressed="true">${esc(n)}</button>`).join('');
-function syncChips(){chips.querySelectorAll('.chip[data-c]').forEach(b=>b.setAttribute('aria-pressed',S.c.has(b.dataset.c)))}
+chips.innerHTML=`<button type="button" class="chip all" id="c-all">Hepsini seç</button>`+CATS.map(([c,n])=>`<button type="button" class="chip" id="c-${c}" data-c="${c}" aria-pressed="false">${esc(n)}</button>`).join('');
+function syncChips(){chips.querySelectorAll('.chip[data-c]').forEach(b=>b.setAttribute('aria-pressed',S.c.has(b.dataset.c)));document.getElementById('c-all').textContent=S.c.size===CATS.length?'Seçimi temizle':'Hepsini seç';changed()}
+function changed(){const go=document.getElementById('go'),h=document.getElementById('hint');go.disabled=!S.c.size;go.classList.toggle('dirty',ran&&!!S.c.size);h.textContent=!S.c.size?'En az bir bölüm seç.':(ran?'Seçim değişti. Sonuçları güncellemek için Sorgula\'ya bas.':`${S.c.size} bölüm seçili.`)}
 chips.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
   if(!b.dataset.c){S.c=new Set(S.c.size===CATS.length?[]:CATS.map(c=>c[0]))}
   else{const c=b.dataset.c;S.c.has(c)?S.c.delete(c):S.c.add(c)}
-  syncChips();render()});
+  syncChips()});
 
 function prow(r,uniLine){
   const one=r[8]===r[9];
@@ -254,10 +291,9 @@ function prow(r,uniLine){
 }
 function render(){
   const R=DATA.filter(r=>(S.t==='all'||r[0]===S.t)&&S.c.has(r[6])&&(!S.q||low(r[1]+' '+r[3]+' '+r[2]).includes(S.q)));
-  document.getElementById('count').textContent=`${R.length} program · ${tr(R.reduce((s,r)=>s+r[5],0))} kontenjan`;
   const el=document.getElementById('list');
-  if(!R.length){el.innerHTML='<div class="empty">Bu filtrelerle eşleşen program yok. Bölüm seçimini veya aramayı değiştir.</div>';return}
-  let h='';
+  if(!R.length){el.innerHTML='<div class="empty">Bu seçimle eşleşen program yok. Bölüm seçimini veya aramayı değiştirip tekrar sorgula.</div>';return}
+  let h=`<div class="res"><b>Sonuçlar</b><span class="count">${R.length} program · ${tr(R.reduce((s,r)=>s+r[5],0))} kontenjan</span></div>`;
   if(S.sort==='uni'){
     const by=new Map();
     R.slice().sort((a,b)=>a[0].localeCompare(b[0])||coll.compare(a[1],b[1])||coll.compare(a[3],b[3])).forEach(r=>{const k=r[0]+r[1];if(!by.has(k))by.set(k,[]);by.get(k).push(r)});
@@ -267,14 +303,23 @@ function render(){
     }
   }else{
     const cmp={min:(a,b)=>b[8]-a[8],minA:(a,b)=>a[8]-b[8],k:(a,b)=>b[5]-a[5]||b[8]-a[8]}[S.sort];
-    h=`<div class="uni">${R.slice().sort(cmp).map(r=>prow(r,true)).join('')}</div>`;
+    h+=`<div class="uni">${R.slice().sort(cmp).map(r=>prow(r,true)).join('')}</div>`;
   }
   el.innerHTML=h;
 }
-document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{S.t=b.dataset.t;document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));render()});
-document.getElementById('q').oninput=e=>{S.q=low(e.target.value.trim());render()};
-document.getElementById('sort').onchange=e=>{S.sort=e.target.value;render()};
-render();
+document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{S.t=b.dataset.t;document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));changed()});
+document.getElementById('q').oninput=e=>{S.q=low(e.target.value.trim());changed()};
+document.getElementById('sort').onchange=e=>{S.sort=e.target.value;changed()};
+function query(){
+  if(!S.c.size)return;
+  const el=document.getElementById('list'),go=document.getElementById('go');
+  clearTimeout(timer);go.disabled=true;
+  el.innerHTML='<div class="loading" role="status" aria-live="polite"><div class="eq"><span></span><span></span><span></span></div><span class="lb2">Liste hazırlanıyor, lütfen bekleyin…</span></div>';
+  timer=setTimeout(()=>{ran=true;render();go.disabled=false;go.classList.remove('dirty');document.getElementById('hint').textContent='Seçimi değiştirip yeniden sorgulayabilirsin.'},1100);
+}
+document.getElementById('qform').addEventListener('submit',e=>{e.preventDefault();query()});
+document.getElementById('list').innerHTML='<div class="start"><b>Henüz sorgu yapılmadı</b><span>Yukarıdan bölüm seçip Sorgula\'ya bas.</span></div>';
+changed();
 if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
 </script>
 
