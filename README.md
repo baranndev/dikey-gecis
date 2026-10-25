@@ -1,7 +1,7 @@
-# Dikey Geçiş Bilişim Rehberi
+# Dikey Geçiş Rehberi
 
-2026 DGS için bilgisayar, yazılım, bilişim ve istatistik alanındaki on lisans programının kontenjanları ile en küçük ve en büyük yerleştirme puanları.
+Ön lisans bölümüne göre 2026 DGS ile geçilebilecek lisans programlarını, kontenjanlarını ve 2026 yerleştirmesindeki en küçük ve en büyük puanları gösteren bağımsız bilgi sitesi.
 
-Devlet üniversitelerinin tüm kontenjanları, vakıf üniversitelerinin yalnızca burslu kontenjanları listelenir.
+Site: https://baranndev.github.io/dikey-gecis
 
-Kaynak: ÖSYM Tablo-1 (Merkezi Yerleştirme ile Dikey Geçiş) ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.
+Kaynak: ÖSYM 2026-DGS Tercih Kılavuzu Tablo-1 ve Tablo-2, 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar. Resmi kaynak değildir; tercih yapmadan önce ÖSYM kılavuzunu kontrol edin.

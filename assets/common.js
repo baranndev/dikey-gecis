@@ -1,54 +1,83 @@
-// Ortak yardımcılar: bölüm listesi, biçimlendirme, puan çubuğu, sorgu durumu
-const CATS=[
-  ['BM','Bilgisayar Mühendisliği'],['YM','Yazılım Mühendisliği'],['BB','Bilgisayar Bilimleri'],
-  ['MBB','Matematik ve Bilgisayar Bilimleri'],['IBB','İstatistik ve Bilgisayar Bilimleri'],['IST','İstatistik'],
-  ['BSM','Bilişim Sistemleri Mühendisliği'],['BST','Bilişim Sistemleri ve Teknolojileri'],
-  ['BÖTE','Bilgisayar ve Öğretim Teknolojileri Öğretmenliği'],['YBS','Yönetim Bilişim Sistemleri']];
-const CN=Object.fromEntries(CATS);
-const LO=235,HI=360;
-const pos=v=>(v-LO)/(HI-LO)*100;
+// Ortak yardımcılar. Veri: assets/data.js içindeki D = {P,U,F,LA,ON,notes}
+// P satırı: [tür(D/V/K), üniİdx, fakülteİdx, kod, ad, puanTürü, kont, alanKodu, burs(''|B|I50|I25|U), bakınızlar, yerleşen, enKüçük, enBüyük, açıköğretim(0/1)]
+// ON satırı: [kod, ad, genelAlanKodları[], açıköğretimEkAlanKodları[]]
+const LO=140,HI=360;
+const pos=v=>Math.max(0,Math.min(100,(v-LO)/(HI-LO)*100));
 const coll=new Intl.Collator('tr');
 const low=s=>String(s).toLocaleLowerCase('tr');
+const norm=s=>low(s).replace(/[çğıöşüâîû]/g,c=>({'ç':'c','ğ':'g','ı':'i','ö':'o','ş':'s','ü':'u','â':'a','î':'i','û':'u'}[c])).replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim();
 const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-const f1=v=>v.toLocaleString('tr',{minimumFractionDigits:1,maximumFractionDigits:1});
+const f1=v=>v==null?'–':v.toLocaleString('tr',{minimumFractionDigits:1,maximumFractionDigits:1});
 const f3=v=>v==null?'–':v.toLocaleString('tr',{minimumFractionDigits:3,maximumFractionDigits:3});
 const tr=n=>n.toLocaleString('tr');
+const TYPE={D:'Devlet',V:'Vakıf',K:'KKTC'};
+const BURS={'':'',B:'Burslu',I50:'%50 indirimli',I25:'%25 indirimli',U:'Ücretli'};
 
-function rangeBar(cls,a,b,label,extra=''){
-  if(a==null) return `<div class="bar ${cls} ${extra}"><div class="tr"></div><span class="na">burslu kontenjan yok</span></div>`;
+// ön lisans anahtarı: kod + dipnot yıldızları (aynı kodlu özel satırları ayırmak için)
+const onKey=o=>o[0]+'*'.repeat((o[1].match(/\*/g)||[]).length);
+const ONBY=Object.fromEntries(D.ON.map(o=>[onKey(o),o]));
+const ONIDX=D.ON.map(o=>({o,key:onKey(o),n:norm(o[1]+' '+o[0])}));
+function searchOn(q,limit=8){
+  const n=norm(q); if(!n) return [];
+  const parts=n.split(' ');
+  const hits=ONIDX.filter(x=>parts.every(p=>x.n.includes(p)));
+  const sc=x=>(x.n.startsWith(n)?0:x.n.split(' ').some(w=>w.startsWith(parts[0]))?1:2);
+  return hits.sort((a,b)=>sc(a)-sc(b)||coll.compare(a.o[1],b.o[1])).slice(0,limit);
+}
+// bir ön lisans bölümünden tercih edilebilecek programlar
+function eligible(o,alanSel){
+  const g=new Set(o[2]),a=new Set(o[3]);
+  return D.P.filter(p=>(g.has(p[7])||(p[13]&&a.has(p[7])))&&(!alanSel||alanSel.has(p[7])));
+}
+function rangeBar(cls,a,b,extra=''){
+  if(a==null) return `<div class="bar ${cls} ${extra}"><div class="tr"></div></div>`;
   const L=pos(a),W=Math.max(pos(b)-pos(a),0);
-  const lb=label?`<span class="lb" style="${pos(b)>76?`right:${(100-L+1.5).toFixed(2)}%`:`left:calc(${pos(b).toFixed(2)}% + 16px)`}">${label}</span>`:'';
-  return `<div class="bar ${cls} ${extra}"><div class="tr"></div><div class="rg" style="left:${L.toFixed(2)}%;width:${W.toFixed(2)}%"></div>${lb}</div>`;
+  return `<div class="bar ${cls} ${extra}"><div class="tr"></div><div class="rg" style="left:${L.toFixed(2)}%;width:${W.toFixed(2)}%"></div></div>`;
 }
-function catStats(c,t){
-  const L=DATA.filter(r=>r[6]===c&&(!t||r[0]===t));
-  const m=L.map(r=>r[8]).filter(v=>v!=null);
-  return {n:L.length,k:L.reduce((s,r)=>s+r[5],0),min:m.length?Math.min(...m):null,max:m.length?Math.max(...m):null,pt:(DATA.find(r=>r[6]===c)||[])[4]};
-}
-
-// Sorgu durumu: önce adres satırı, yoksa oturum belleği
+// sorgu durumu
+const DEF={o:'',a:null,t:'DV',k:'B',q:'',s:'uni'};
 function readQuery(){
   const p=new URLSearchParams(location.search);
-  if(p.get('b')){
-    return {b:p.get('b').split(',').filter(c=>CN[c]),t:['all','D','V'].includes(p.get('t'))?p.get('t'):'all',q:p.get('q')||'',s:p.get('s')||'uni'};
+  if(p.get('o')&&ONBY[p.get('o')]){
+    return {o:p.get('o'),a:p.get('a')?p.get('a').split(',').filter(Boolean):null,t:p.get('t')||'DV',k:p.get('k')||'B',q:p.get('q')||'',s:p.get('s')||'uni'};
   }
-  try{const s=JSON.parse(sessionStorage.getItem('dg-q'));if(s&&Array.isArray(s.b))return s}catch(e){}
+  try{const s=JSON.parse(sessionStorage.getItem('dg-q'));if(s&&ONBY[s.o])return Object.assign({},DEF,s)}catch(e){}
   return null;
 }
 function saveQuery(st){try{sessionStorage.setItem('dg-q',JSON.stringify(st))}catch(e){}}
 function queryUrl(page,st){
-  const p=new URLSearchParams({b:st.b.join(','),t:st.t});
+  const p=new URLSearchParams({o:st.o});
+  if(st.a&&st.a.length)p.set('a',st.a.join(','));
+  if(st.t&&st.t!=='DV')p.set('t',st.t);
+  if(st.k&&st.k!=='B')p.set('k',st.k);
   if(st.q)p.set('q',st.q); if(st.s&&st.s!=='uni')p.set('s',st.s);
   return `${page}?${p}`;
 }
-// data-b taşıyan bağlantılar sorguyu belleğe yazar (adres satırı parametresi taşınmasa da çalışsın)
-document.addEventListener('click',e=>{
-  const a=e.target.closest('a[data-b]');
-  if(a) saveQuery({b:a.dataset.b.split(','),t:a.dataset.t||'all',q:'',s:'uni'});
-});
-// kaydırınca menü çizgisi
+// otomatik tamamlamalı arama kutusu
+function autocomplete(input,list,onPick){
+  let items=[],act=-1;
+  const close=()=>{list.hidden=true;input.setAttribute('aria-expanded','false');act=-1};
+  const draw=()=>{
+    items=searchOn(input.value,8);
+    if(!items.length){list.innerHTML=input.value.trim()?'<li class="none">Eşleşen bölüm yok. Farklı bir yazım dene.</li>':'';list.hidden=!input.value.trim();return}
+    list.innerHTML=items.map((x,i)=>`<li role="option" id="${list.id}-${i}" aria-selected="${i===act}" data-i="${i}"><b>${esc(x.o[1])}</b><span>${x.o[0]} · ${x.o[2].length+x.o[3].length} lisans alanı</span></li>`).join('');
+    list.hidden=false;input.setAttribute('aria-expanded','true');
+  };
+  input.addEventListener('input',()=>{act=-1;draw()});
+  input.addEventListener('focus',()=>{if(input.value.trim())draw()});
+  input.addEventListener('keydown',e=>{
+    if(list.hidden&&e.key!=='Enter')return;
+    if(e.key==='ArrowDown'){act=Math.min(act+1,items.length-1);e.preventDefault();draw();}
+    else if(e.key==='ArrowUp'){act=Math.max(act-1,0);e.preventDefault();draw();}
+    else if(e.key==='Enter'){if(items.length){e.preventDefault();pick(items[Math.max(act,0)])}}
+    else if(e.key==='Escape'){close()}
+    if(act>=0)input.setAttribute('aria-activedescendant',`${list.id}-${act}`);
+  });
+  list.addEventListener('mousedown',e=>{const li=e.target.closest('li[data-i]');if(li){e.preventDefault();pick(items[+li.dataset.i])}});
+  document.addEventListener('click',e=>{if(!list.contains(e.target)&&e.target!==input)close()});
+  function pick(x){input.value=x.o[1];close();onPick(x)}
+}
 addEventListener('scroll',()=>{const n=document.querySelector('.nav');if(n)n.classList.toggle('scrolled',scrollY>8)},{passive:true});
-// çevrimdışı çalışma (yalnızca kendi alan adında)
 if('serviceWorker' in navigator && location.protocol==='https:' && location.hostname.endsWith('github.io')){
   addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }

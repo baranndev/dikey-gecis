@@ -98,3 +98,25 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .legal a{color:var(--form)}
 .copy{margin-top:32px;font:12px var(--f-mono);color:var(--faint);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media (max-width:820px){.foot .grid{grid-template-columns:minmax(0,1fr);gap:28px}}
+
+/* arama kutusu + öneri listesi */
+.search{position:relative}
+.search .box{display:flex;align-items:center;gap:12px;background:var(--sheet);border:1.5px solid var(--rule);border-radius:16px;padding:6px 6px 6px 18px;box-shadow:var(--shadow);transition:border-color .15s}
+.search .box:focus-within{border-color:var(--form)}
+.search .box svg{width:20px;height:20px;flex:none;color:var(--faint)}
+.search input{flex:1;min-width:0;border:0;background:transparent;font:500 17px var(--f-body);padding:12px 0;outline:none}
+.search input::placeholder{color:var(--faint)}
+.search .box .btn{flex:none}
+.sugg{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:15;list-style:none;margin:0;padding:6px;background:var(--sheet);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);max-height:360px;overflow:auto}
+.sugg li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 12px;border-radius:10px;cursor:pointer}
+.sugg li b{font-weight:500}
+.sugg li span{font:12px var(--f-mono);color:var(--faint);white-space:nowrap}
+.sugg li[aria-selected="true"],.sugg li:hover{background:var(--form-soft)}
+.sugg li.none{cursor:default;color:var(--soft);background:none}
+@media (max-width:560px){.search .box{padding-left:14px}.search .box .btn{padding:12px 14px}.sugg li{flex-direction:column;gap:2px}}
+.chiprow{display:flex;gap:8px;flex-wrap:wrap}
+.qchip{font:500 13.5px var(--f-body);padding:7px 13px;border-radius:999px;border:1px solid var(--rule);background:var(--sheet);text-decoration:none;transition:border-color .15s,color .15s}
+.qchip:hover{border-color:var(--form);color:var(--form)}
+
+.bar.SAY .rg{background:var(--blue)} .bar.EA .rg{background:var(--form)} .bar.SÖZ .rg{background:var(--ink)}
+.sw.SAY{background:var(--blue)} .sw.EA{background:var(--form)} .sw.SÖZ{background:var(--ink)}

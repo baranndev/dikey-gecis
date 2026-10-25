@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Program Sorgula · Dikey Geçiş</title>
-<meta name="description" content="Bölümlerini seç, dikey geçiş programlarını puanlarıyla listele.">
+<meta name="description" content="Ön lisans bölümünü seç, geçebileceğin lisans programlarını listele.">
 <meta name="theme-color" content="#c23a57">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
@@ -23,15 +23,22 @@
 .qhead{padding-block:56px 32px}
 .qhead h1{font-size:clamp(36px,5vw,60px);line-height:1;font-weight:700;letter-spacing:-.03em;margin:18px 0 14px}
 .qgrid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;align-items:start}
-.qform{display:flex;flex-direction:column;gap:0;background:var(--sheet);border:1px solid var(--rule);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
+.qform{display:flex;flex-direction:column;background:var(--sheet);border:1px solid var(--rule);border-radius:20px;box-shadow:var(--shadow)}
 .qstep{padding:28px;border-top:1px solid var(--rule-2);display:flex;flex-direction:column;gap:16px}
 .qstep:first-child{border-top:0}
+.qstep.off{opacity:.45;pointer-events:none}
 .qstep .h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
 .qstep h2{font-size:20px;letter-spacing:-.01em;display:flex;gap:12px;align-items:center}
 .qstep h2 .n{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--form);color:var(--form);display:grid;place-items:center;font:600 12.5px var(--f-mono);flex:none}
+.qstep .note{font-size:13.5px;color:var(--soft);margin:0}
 .link{border:0;background:none;color:var(--form);font:500 14px var(--f-body);cursor:pointer;padding:4px 0}
-.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.opt{position:relative;display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:1px solid var(--rule);border-radius:12px;cursor:pointer;background:var(--paper);transition:border-color .15s,background .15s}
+.search .box{box-shadow:none;background:var(--paper)}
+.picked{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;background:var(--form-soft);border:1px solid var(--form)}
+.picked b{font:600 17px var(--f-display)}
+.picked small{display:block;font:12px var(--f-mono);color:var(--soft)}
+.grp{font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-top:4px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.opt{position:relative;display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--rule);border-radius:12px;cursor:pointer;background:var(--paper);transition:border-color .15s,background .15s}
 .opt:hover{border-color:var(--form)}
 .opt input{position:absolute;opacity:0;pointer-events:none}
 .opt .bub{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--form);flex:none;margin-top:1px;display:grid;place-items:center;transition:background .15s}
@@ -40,18 +47,22 @@
 .opt:has(input:checked) .bub{background:var(--form)}
 .opt:has(input:checked) .bub::after{transform:scale(1)}
 .opt:has(input:focus-visible){outline:2px solid var(--form);outline-offset:2px}
-.opt b{display:block;font-weight:600;font-size:15px;line-height:1.3}
-.opt small{display:block;font:12px var(--f-mono);color:var(--soft);margin-top:3px}
-.seg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid var(--rule);border-radius:12px;padding:4px;background:var(--paper);gap:4px;max-width:100%}
-.seg label{position:relative;padding:10px 18px;border-radius:9px;cursor:pointer;text-align:center;font-weight:500;font-size:14.5px;white-space:nowrap}
-.seg input{position:absolute;opacity:0;pointer-events:none}
-.seg label:has(input:checked){background:var(--ink);color:var(--paper)}
-.seg label:has(input:focus-visible){outline:2px solid var(--form);outline-offset:2px}
+.opt b{display:block;font-weight:600;font-size:14.5px;line-height:1.3}
+.opt small{display:block;font:11.5px var(--f-mono);color:var(--soft);margin-top:3px}
+.toggles{display:flex;gap:8px;flex-wrap:wrap}
+.tg{position:relative;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--rule);border-radius:999px;cursor:pointer;background:var(--paper);font-weight:500;font-size:14.5px}
+.tg input{position:absolute;opacity:0;pointer-events:none}
+.tg::before{content:"";width:16px;height:16px;border-radius:5px;border:1.5px solid var(--form);flex:none}
+.tg:has(input:checked){border-color:var(--form);background:var(--form-soft)}
+.tg:has(input:checked)::before{background:var(--form);box-shadow:inset 0 0 0 3px var(--form-soft)}
+.tg:has(input:focus-visible){outline:2px solid var(--form);outline-offset:2px}
+.sub2{display:flex;flex-direction:column;gap:8px}
+.sub2 .lbl{font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
 .row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,220px);gap:10px}
 .fld{display:flex;flex-direction:column;gap:6px}
 .fld label{font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
 input[type=search],select{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;font-size:15px;min-width:0;width:100%}
-.qbar{padding:20px 28px;background:var(--rule-2);display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.qbar{padding:20px 28px;background:var(--rule-2);display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-radius:0 0 20px 20px}
 .qbar .hint{font-size:14px;color:var(--soft)}
 .qbar .btn{min-width:200px}
 .side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 84px);display:flex;flex-direction:column;gap:14px}
@@ -61,20 +72,13 @@ input[type=search],select{background:var(--paper);border:1px solid var(--rule);b
 .sum .lbl{font:11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-top:4px}
 .sum .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px;padding-top:16px;border-top:1px dashed var(--rule)}
 .sum .two b{font:600 22px var(--f-display);font-variant-numeric:tabular-nums}
-.sum .two .d{color:var(--blue)} .sum .two .v{color:var(--form)}
-.tip{font-size:13.5px;color:var(--soft);padding:0 4px}
-@media (max-width:900px){
-  .qgrid{grid-template-columns:minmax(0,1fr)}
-  .side{position:static}
-  .sum .big{font-size:34px}
-}
+.tip{font-size:13.5px;color:var(--soft);padding:0 4px;margin:0}
+@media (max-width:900px){.qgrid{grid-template-columns:minmax(0,1fr)}.side{position:static}.sum .big{font-size:34px}}
 @media (max-width:560px){
   .opts{grid-template-columns:minmax(0,1fr)}
   .qstep{padding:20px}
   .row{grid-template-columns:minmax(0,1fr)}
-  .seg{display:grid;width:100%}
-  .seg label{padding:10px 8px;font-size:13.5px}
-  .qbar{padding:16px 20px;position:sticky;bottom:0;bottom:env(safe-area-inset-bottom,0px)}
+  .qbar{padding:16px 20px;position:sticky;bottom:env(safe-area-inset-bottom,0px);border-radius:0 0 20px 20px}
   .qbar .btn{width:100%}
 }
 
@@ -84,8 +88,8 @@ input[type=search],select{background:var(--paper);border:1px solid var(--rule);b
 <header class="nav"><div class="wrap">
   <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
   <nav aria-label="Ana menü">
-    <a href="index.html#bolumler" class="hide-sm">Bölümler</a>
-    <a href="index.html#harita" class="hide-sm">Puan haritası</a>
+    <a href="index.html#nasil" class="hide-sm">Nasıl çalışır</a>
+    <a href="index.html#populer" class="hide-sm">Popüler bölümler</a>
     <a href="index.html#kaynak" class="hide-sm">Kaynak</a>
     <a class="btn primary sm" href="sorgula.html">Sorgula</a>
   </nav>
@@ -94,39 +98,52 @@ input[type=search],select{background:var(--paper);border:1px solid var(--rule);b
 <main class="wrap">
 <div class="qhead">
   <span class="eyebrow">Program sorgula</span>
-  <h1>Hangi programlara bakıyorsun?</h1>
-  <p class="lead">Bölümlerini işaretle, üniversite türünü seç ve Sorgula'ya bas. Sonuçlar ayrı bir sayfada, puanlarıyla birlikte listelenir.</p>
+  <h1>Hangi bölümden geçiyorsun?</h1>
+  <p class="lead">Ön lisans bölümünü seç; kılavuza göre tercih edebileceğin lisans alanları otomatik gelsin. Sonra filtrele ve Sorgula'ya bas.</p>
 </div>
 <div class="qgrid">
   <form class="qform" id="qform" novalidate>
     <div class="qstep">
-      <div class="h"><h2><span class="n">1</span>Bölümleri seç</h2><button type="button" class="link" id="all">Hepsini seç</button></div>
-      <div class="opts" id="opts"></div>
-    </div>
-    <div class="qstep">
-      <div class="h"><h2><span class="n">2</span>Üniversite türü</h2></div>
-      <div class="seg" role="radiogroup" aria-label="Üniversite türü">
-        <label><input type="radio" name="t" id="t-all" value="all" checked>Tümü</label>
-        <label><input type="radio" name="t" id="t-D" value="D">Devlet</label>
-        <label><input type="radio" name="t" id="t-V" value="V">Vakıf · burslu</label>
+      <div class="h"><h2><span class="n">1</span>Ön lisans bölümün</h2></div>
+      <div class="search" id="sbox">
+        <div class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="os" type="text" autocomplete="off" placeholder="Bölüm adı veya alan kodu yaz" aria-label="Ön lisans bölümü" role="combobox" aria-controls="osl" aria-expanded="false" aria-autocomplete="list"></div>
+        <ul class="sugg" id="osl" role="listbox" hidden></ul>
       </div>
+      <div class="picked" id="picked" hidden><div><small id="pcode"></small><b id="pname"></b></div><button type="button" class="link" id="change">Değiştir</button></div>
+      <p class="note" id="pnote" hidden></p>
     </div>
-    <div class="qstep">
-      <div class="h"><h2><span class="n">3</span>Daralt ve sırala <small style="font:12px var(--f-mono);color:var(--faint);font-weight:400">isteğe bağlı</small></h2></div>
+    <div class="qstep off" id="s2">
+      <div class="h"><h2><span class="n">2</span>Lisans alanları</h2><button type="button" class="link" id="all">Seçimi temizle</button></div>
+      <p class="note">Tablo-2'ye göre tercih edebileceğin alanlar. İlgilenmediklerini kaldırabilirsin.</p>
+      <div id="alans"></div>
+    </div>
+    <div class="qstep off" id="s3">
+      <div class="h"><h2><span class="n">3</span>Üniversite ve kontenjan türü</h2></div>
+      <div class="sub2"><span class="lbl">Üniversite türü</span><div class="toggles">
+        <label class="tg"><input type="checkbox" name="t" value="D" id="t-D" checked>Devlet</label>
+        <label class="tg"><input type="checkbox" name="t" value="V" id="t-V" checked>Vakıf</label>
+        <label class="tg"><input type="checkbox" name="t" value="K" id="t-K">KKTC</label></div></div>
+      <div class="sub2"><span class="lbl">Vakıf ve KKTC kontenjanı</span><div class="toggles">
+        <label class="tg"><input type="checkbox" name="k" value="B" id="k-B" checked>Burslu</label>
+        <label class="tg"><input type="checkbox" name="k" value="I" id="k-I">İndirimli</label>
+        <label class="tg"><input type="checkbox" name="k" value="U" id="k-U">Ücretli</label></div></div>
+    </div>
+    <div class="qstep off" id="s4">
+      <div class="h"><h2><span class="n">4</span>Daralt ve sırala <small style="font:12px var(--f-mono);color:var(--faint);font-weight:400">isteğe bağlı</small></h2></div>
       <div class="row">
         <div class="fld"><label for="q">Ara</label><input type="search" id="q" placeholder="Şehir, üniversite veya program kodu"></div>
-        <div class="fld"><label for="s">Sıralama</label><select id="s"><option value="uni">Üniversite (A–Z)</option><option value="min">Taban puan (yüksekten)</option><option value="minA">Taban puan (düşükten)</option><option value="k">Kontenjan (çoktan)</option></select></div>
+        <div class="fld"><label for="s">Sıralama</label><select id="s"><option value="uni">Üniversite (A–Z)</option><option value="alan">Lisans alanına göre</option><option value="min">Taban puan (yüksekten)</option><option value="minA">Taban puan (düşükten)</option><option value="k">Kontenjan (çoktan)</option></select></div>
       </div>
     </div>
-    <div class="qbar"><span class="hint" id="hint">En az bir bölüm seç.</span><button type="submit" class="btn primary" id="go" disabled>Sorgula <span class="arr">→</span></button></div>
+    <div class="qbar"><span class="hint" id="hint">Önce ön lisans bölümünü seç.</span><button type="submit" class="btn primary" id="go" disabled>Sorgula <span class="arr">→</span></button></div>
   </form>
   <aside class="side" aria-live="polite">
     <div class="sum">
       <h3>Seçimin</h3>
       <div class="big" id="sN">0</div><div class="lbl">program bulunacak</div>
-      <div class="two"><div><b class="d" id="sD">0</b><div class="lbl">devlet kont.</div></div><div><b class="v" id="sV">0</b><div class="lbl">burslu kont.</div></div></div>
+      <div class="two"><div><b id="sK">0</b><div class="lbl">toplam kontenjan</div></div><div><b id="sU">0</b><div class="lbl">üniversite</div></div></div>
     </div>
-    <p class="tip">Vakıf üniversitelerinde yalnızca burslu kontenjanlar gösterilir. Bilgisayar Bilimleri, BÖTE ile İstatistik ve Bilgisayar Bilimleri için burslu kontenjan yoktur.</p>
+    <p class="tip">Devlet üniversitelerinde tüm kontenjanlar gösterilir. Vakıf ve KKTC için hangi kontenjan türlerini görmek istediğini 3. adımda seçebilirsin.</p>
   </aside>
 </div>
 </main>
@@ -134,14 +151,15 @@ input[type=search],select{background:var(--paper);border:1px solid var(--rule);b
   <div class="grid">
     <div>
       <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
-      <p>2026 DGS'de bilgisayar, yazılım, bilişim ve istatistik alanındaki on lisans programı için kontenjan ve yerleştirme puanlarını tek yerde toplayan bağımsız bir bilgi sayfası.</p>
-      <p><b>Kaynak:</b> ÖSYM, Tablo-1 Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Yükseköğretim Lisans Programları ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
-      <p>Devlet üniversitelerinin tüm kontenjanları, vakıf üniversitelerinin yalnızca burslu kontenjanları yer alır. KKTC üniversiteleri listede yoktur.</p>
+      <p>Ön lisans bölümüne göre 2026 DGS ile geçilebilecek lisans programlarını, kontenjanlarını ve yerleştirme puanlarını tek yerde toplayan bağımsız bir bilgi sayfası.</p>
+      <p><b>Kaynak:</b> ÖSYM 2026-DGS Tercih Kılavuzu Tablo-1 (Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Lisans Programları), Tablo-2 (Ön Lisans Mezuniyet Alanlarına Göre Dikey Geçiş Yapılabilecek Lisans Programları) ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
+      <p>Program koşulları ("Bakınızlar" numaraları) için kılavuzdaki açıklamalara bakılmalıdır.</p>
     </div>
     <div class="legal" role="note"><h3>Yasal uyarı</h3><ul>
       <li>Bu sayfadaki veriler ÖSYM'nin kamuya açık yayımladığı PDF belgelerinden derlenmiştir. Sayfa ÖSYM ile bağlantılı değildir ve resmi bir kaynak değildir.</li>
       <li>Veriler otomatik olarak aktarılmıştır; aktarım sırasında hata veya eksiklik olabilir. Kesin doğruluk garanti edilmez.</li>
       <li>Buradaki bilgiler yalnızca genel bilgilendirme amaçlıdır. Tercih, başvuru veya başka bir resmi işlemde veri olarak kullanılmamalıdır.</li>
+      <li>Ön lisans–lisans eşleştirmesi kılavuzdaki Tablo-2'den otomatik çıkarılmıştır; tercih yapmadan önce kendi bölümünü kılavuzda mutlaka kontrol et.</li>
       <li>Geçmiş yılın en küçük ve en büyük puanları sonraki yerleştirmelerin sonucunu göstermez.</li>
       <li>Kontenjan, puan ve başvuru koşullarının güncel ve resmi hâli için <a href="https://www.osym.gov.tr" target="_blank" rel="noopener">osym.gov.tr</a> adresindeki kılavuz ve tabloları kontrol edin. Bu sayfanın kullanımından doğabilecek sonuçlardan sayfa sahibi sorumlu tutulamaz.</li>
     </ul></div>
@@ -152,27 +170,50 @@ input[type=search],select{background:var(--paper);border:1px solid var(--rule);b
 <script src="assets/common.js"></script>
 <script>
 (function(){
-  const opts=document.getElementById('opts');
-  opts.innerHTML=CATS.map(([c,n])=>{const a=catStats(c);return `<label class="opt"><input type="checkbox" name="b" value="${c}" id="b-${c}"><span class="bub"></span><span><b>${esc(n)}</b><small>${a.pt} · ${a.n} program · ${tr(a.k)} kont.</small></span></label>`}).join('');
-  const form=document.getElementById('qform');
-  const st=readQuery();
-  if(st){st.b.forEach(c=>{const i=document.getElementById('b-'+c);if(i)i.checked=true});
-    const t=document.getElementById('t-'+st.t);if(t)t.checked=true;
-    document.getElementById('q').value=st.q||'';document.getElementById('s').value=st.s||'uni';}
-  const cur=()=>({b:[...form.querySelectorAll('input[name=b]:checked')].map(i=>i.value),t:form.querySelector('input[name=t]:checked').value,q:document.getElementById('q').value.trim(),s:document.getElementById('s').value});
+  const form=document.getElementById('qform');let cur=null;
+  const st0=readQuery();
+  function setOn(key,keepSel){
+    cur=ONBY[key];if(!cur)return;
+    document.getElementById('sbox').hidden=true;document.getElementById('picked').hidden=false;
+    document.getElementById('pname').textContent=cur[1];document.getElementById('pcode').textContent='Alan kodu '+cur[0];
+    const pn=document.getElementById('pnote');
+    if(cur[1].includes('**')){pn.hidden=false;pn.textContent='Not: Bu satır, İlahiyat lisans programlarının ilk iki yılını tamamlayarak Sosyal Bilimler ön lisans diploması alanlar içindir. Kılavuzdaki açıklamayı oku.'}
+    else if(cur[1].includes('*')){pn.hidden=false;pn.textContent='Not: Bu satır, 1996–1998 yılları arasında öğrenci alan ODTÜ MYO Endüstriyel Otomasyon programı mezunları içindir.'}
+    else pn.hidden=true;
+    const cnt=a=>D.P.filter(p=>p[7]===a).length;
+    const box=(a,ao)=>`<label class="opt"><input type="checkbox" name="a" value="${a}" id="a-${a}" checked><span class="bub"></span><span><b>${esc(D.LA[a][0])}</b><small>${D.LA[a][1]} · ${ao?'yalnız açıköğretim':cnt(a)+' program'}</small></span></label>`;
+    const g=cur[2].slice().sort((x,y)=>coll.compare(D.LA[x][0],D.LA[y][0])),ao=cur[3].slice().sort((x,y)=>coll.compare(D.LA[x][0],D.LA[y][0]));
+    document.getElementById('alans').innerHTML=`<div class="opts">${g.map(a=>box(a,0)).join('')}</div>`+(ao.length?`<div class="grp" style="margin-top:14px">Açıköğretim ek hakları (Anadolu, Atatürk, İstanbul)</div><div class="opts" style="margin-top:8px">${ao.map(a=>box(a,1)).join('')}</div>`:'');
+    if(keepSel&&st0&&st0.a){const s=new Set(st0.a);form.querySelectorAll('input[name=a]').forEach(i=>i.checked=s.has(i.value))}
+    ['s2','s3','s4'].forEach(id=>document.getElementById(id).classList.remove('off'));
+    upd();
+  }
+  autocomplete(document.getElementById('os'),document.getElementById('osl'),x=>setOn(x.key,false));
+  document.getElementById('change').onclick=()=>{document.getElementById('picked').hidden=true;document.getElementById('sbox').hidden=false;const i=document.getElementById('os');i.value='';i.focus()};
+  const cur_=()=>{const vals=n=>[...form.querySelectorAll(`input[name=${n}]:checked`)].map(i=>i.value);
+    const all=form.querySelectorAll('input[name=a]').length,a=vals('a');
+    return {o:cur?onKey(cur):'',a:a.length===all?null:a,aSet:new Set(a),t:vals('t').join(''),k:vals('k').join(''),q:document.getElementById('q').value.trim(),s:document.getElementById('s').value}};
   function upd(){
-    const s=cur(),ql=low(s.q);
-    const R=DATA.filter(r=>s.b.includes(r[6])&&(s.t==='all'||r[0]===s.t)&&(!ql||low(r[1]+' '+r[3]+' '+r[2]).includes(ql)));
+    const s=cur_(),go=document.getElementById('go'),h=document.getElementById('hint');
+    if(!cur){go.disabled=true;h.textContent='Önce ön lisans bölümünü seç.';return}
+    document.getElementById('all').textContent=s.aSet.size?'Seçimi temizle':'Hepsini seç';
+    const ql=low(s.q);
+    const R=eligible(cur,s.aSet).filter(p=>s.t.includes(p[0])&&(p[8]===''||s.k.includes(p[8][0]))&&(!ql||low(D.U[p[1]]+' '+p[4]+' '+p[3]).includes(ql)));
     document.getElementById('sN').textContent=tr(R.length);
-    document.getElementById('sD').textContent=tr(R.filter(r=>r[0]==='D').reduce((a,r)=>a+r[5],0));
-    document.getElementById('sV').textContent=tr(R.filter(r=>r[0]==='V').reduce((a,r)=>a+r[5],0));
-    const go=document.getElementById('go');go.disabled=!s.b.length||!R.length;
-    document.getElementById('hint').textContent=!s.b.length?'En az bir bölüm seç.':!R.length?'Bu seçimle eşleşen program yok.':`${s.b.length} bölüm seçili.`;
-    document.getElementById('all').textContent=s.b.length===CATS.length?'Seçimi temizle':'Hepsini seç';
+    document.getElementById('sK').textContent=tr(R.reduce((a,p)=>a+p[6],0));
+    document.getElementById('sU').textContent=tr(new Set(R.map(p=>p[1])).size);
+    go.disabled=!R.length;
+    h.textContent=!s.aSet.size?'En az bir lisans alanı seç.':!s.t?'En az bir üniversite türü seç.':!R.length?'Bu seçimle eşleşen program yok.':`${s.aSet.size} alan · ${tr(R.length)} program`;
   }
   form.addEventListener('input',upd);form.addEventListener('change',upd);
-  document.getElementById('all').onclick=()=>{const on=cur().b.length!==CATS.length;form.querySelectorAll('input[name=b]').forEach(i=>i.checked=on);upd()};
-  form.addEventListener('submit',e=>{e.preventDefault();const s=cur();if(!s.b.length)return;saveQuery(s);location.href=queryUrl('sonuc.html',s)});
+  document.getElementById('all').onclick=()=>{const on=!cur_().aSet.size;form.querySelectorAll('input[name=a]').forEach(i=>i.checked=on);upd()};
+  form.addEventListener('submit',e=>{e.preventDefault();if(document.getElementById('go').disabled)return;const s=cur_();delete s.aSet;saveQuery(s);location.href=queryUrl('sonuc.html',s)});
+  if(st0){
+    ['D','V','K'].forEach(t=>document.getElementById('t-'+t).checked=st0.t.includes(t));
+    ['B','I','U'].forEach(k=>document.getElementById('k-'+k).checked=st0.k.includes(k));
+    document.getElementById('q').value=st0.q||'';document.getElementById('s').value=st0.s||'uni';
+    setOn(st0.o,true);
+  }
   upd();
 })();
 </script>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Sorgu Sonucu · Dikey Geçiş</title>
-<meta name="description" content="Seçtiğin bölümlerin dikey geçiş programları, kontenjanları ve puanları.">
+<meta name="description" content="Ön lisans bölümüne göre geçilebilecek lisans programları, kontenjanlar ve puanlar.">
 <meta name="theme-color" content="#c23a57">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
@@ -22,15 +22,18 @@
 
 .rhead{padding-block:40px 28px;border-bottom:1px solid var(--rule)}
 .rtools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
-.rhead h1{font-size:clamp(32px,4.6vw,56px);line-height:1.02;font-weight:700;letter-spacing:-.03em;margin:16px 0 12px}
-.rhead .sub{color:var(--soft);margin:0;max-width:72ch}
+.rhead .from{font:12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-top:16px}
+.rhead h1{font-size:clamp(32px,4.6vw,56px);line-height:1.02;font-weight:700;letter-spacing:-.03em;margin:6px 0 12px}
+.rhead .sub{color:var(--soft);margin:0;max-width:76ch}
 .chipset{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
-.chipset span{font:500 12px var(--f-mono);padding:4px 10px;border-radius:999px;background:var(--sheet);border:1px solid var(--rule);color:var(--soft)}
+.chipset span{font:500 12.5px var(--f-body);padding:4px 10px;border-radius:999px;background:var(--sheet);border:1px solid var(--rule);color:var(--soft)}
+.chipset span.ao{border-style:dashed}
 .kpis{display:flex;gap:32px;flex-wrap:wrap;margin-top:24px}
 .kpis div{display:flex;flex-direction:column;gap:2px}
 .kpis b{font:700 30px/1 var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .kpis span{font:11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
-.kpis .d b{color:var(--blue)} .kpis .v b{color:var(--form)}
+.legend2{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;font:12px var(--f-mono);color:var(--soft)}
+.legend2 span{display:inline-flex;gap:6px;align-items:center}
 
 .loading{display:flex;flex-direction:column;align-items:center;gap:22px;padding:96px 0 120px;text-align:center}
 .loading b{font:600 20px var(--f-display);letter-spacing:-.01em}
@@ -44,25 +47,34 @@
 @keyframes prog{to{width:100%}}
 @media (prefers-reduced-motion:reduce){.bubbles i{animation:none;background:var(--form-soft)}.prog i{animation:none;width:60%}}
 
-.list{padding-top:8px}
+.grpbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px);z-index:4;background:var(--paper);display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--rule);margin-top:20px}
+.grpbar select{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:8px 12px;font-size:14px}
+.grpbar .c{font:12px var(--f-mono);color:var(--soft)}
+.more{display:flex;justify-content:center;padding:32px 0}
 .uni{padding-top:28px;animation:rise .4s ease both}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.uni{animation:none}}
 .uh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding-bottom:10px;border-bottom:1px solid var(--rule)}
 .uh h2{font-size:17px;line-height:1.3;letter-spacing:-.005em}
 .uh .s{margin-left:auto;font:12px var(--f-mono);color:var(--soft)}
-.p{display:grid;grid-template-columns:minmax(0,1fr) 6rem 4rem minmax(0,16rem);gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--rule-2)}
-.p .nm{min-width:0}
+.p{display:grid;grid-template-columns:minmax(0,1fr) 6rem 4rem minmax(0,15rem);gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--rule-2)}
+.p .nm{min-width:0;display:flex;flex-direction:column;gap:3px}
+.p .nm .u{font-size:12.5px;color:var(--soft);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .p .nm b{font-weight:500}
-.p .nm small{display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--soft);margin-bottom:2px;flex-wrap:wrap}
+.p .nm .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .p .cd{font:12.5px var(--f-mono);color:var(--soft)}
 .p .kt{font:500 16px var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
 .p .kt small{display:block;font:10px var(--f-mono);color:var(--faint);letter-spacing:.06em}
+.mini{font:500 10.5px var(--f-mono);padding:2px 7px;border-radius:5px;background:var(--track);color:var(--soft);white-space:nowrap}
+.mini.b{background:var(--form-soft);color:var(--form)}
+.mini.ao{background:transparent;border:1px dashed var(--form);color:var(--form)}
+.mini.kos{background:transparent;border:1px solid var(--rule);color:var(--faint)}
 .sc{display:flex;flex-direction:column;gap:4px;min-width:0}
 .sc .nums{display:flex;justify-content:space-between;font:12.5px var(--f-mono);font-variant-numeric:tabular-nums}
 .sc .nums b{font-weight:500}
 .sc .nums span{color:var(--faint)}
-.colh{display:grid;grid-template-columns:minmax(0,1fr) 6rem 4rem minmax(0,16rem);gap:20px;padding:20px 0 0;font:10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.sc .none{font:12px var(--f-mono);color:var(--faint)}
+.colh{display:grid;grid-template-columns:minmax(0,1fr) 6rem 4rem minmax(0,15rem);gap:20px;padding:16px 0 0;font:10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
 .colh span:nth-child(3){text-align:right}
 .empty{padding:80px 0;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
 .empty b{font:600 20px var(--f-display)}
@@ -73,6 +85,7 @@
   .p .cd{order:3}
   .p .sc{grid-column:1/-1;order:4}
   .kpis{gap:20px}
+  .grpbar{top:calc(env(safe-area-inset-top,0px) + 64px)}
 }
 
 </style>
@@ -81,8 +94,8 @@
 <header class="nav"><div class="wrap">
   <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
   <nav aria-label="Ana menü">
-    <a href="index.html#bolumler" class="hide-sm">Bölümler</a>
-    <a href="index.html#harita" class="hide-sm">Puan haritası</a>
+    <a href="index.html#nasil" class="hide-sm">Nasıl çalışır</a>
+    <a href="index.html#populer" class="hide-sm">Popüler bölümler</a>
     <a href="index.html#kaynak" class="hide-sm">Kaynak</a>
     <a class="btn primary sm" href="sorgula.html">Sorgula</a>
   </nav>
@@ -92,26 +105,28 @@
   <div class="rhead">
     <div class="rtools"><a class="btn ghost sm" id="edit" href="sorgula.html">← Sorguyu düzenle</a><a class="btn ghost sm" href="sorgula.html" id="fresh">Yeni sorgu</a></div>
     <span class="eyebrow">Sorgu sonucu</span>
+    <div class="from" id="from"></div>
     <h1 id="title">Programlar</h1>
     <p class="sub" id="sub"></p>
     <div class="chipset" id="chips"></div>
   </div>
   <div id="out" aria-live="polite">
-    <div class="loading" role="status"><div class="bubbles"><i></i><i></i><i></i><i></i><i></i></div><b>Liste hazırlanıyor, lütfen bekleyin…</b><div class="prog"><i></i></div><p>Programlar puanlarıyla eşleştiriliyor.</p></div>
+    <div class="loading" role="status"><div class="bubbles"><i></i><i></i><i></i><i></i><i></i></div><b>Liste hazırlanıyor, lütfen bekleyin…</b><div class="prog"><i></i></div><p>Programlar kontenjan ve puanlarıyla eşleştiriliyor.</p></div>
   </div>
 </main>
 <footer class="foot" id="kaynak"><div class="wrap">
   <div class="grid">
     <div>
       <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
-      <p>2026 DGS'de bilgisayar, yazılım, bilişim ve istatistik alanındaki on lisans programı için kontenjan ve yerleştirme puanlarını tek yerde toplayan bağımsız bir bilgi sayfası.</p>
-      <p><b>Kaynak:</b> ÖSYM, Tablo-1 Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Yükseköğretim Lisans Programları ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
-      <p>Devlet üniversitelerinin tüm kontenjanları, vakıf üniversitelerinin yalnızca burslu kontenjanları yer alır. KKTC üniversiteleri listede yoktur.</p>
+      <p>Ön lisans bölümüne göre 2026 DGS ile geçilebilecek lisans programlarını, kontenjanlarını ve yerleştirme puanlarını tek yerde toplayan bağımsız bir bilgi sayfası.</p>
+      <p><b>Kaynak:</b> ÖSYM 2026-DGS Tercih Kılavuzu Tablo-1 (Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Lisans Programları), Tablo-2 (Ön Lisans Mezuniyet Alanlarına Göre Dikey Geçiş Yapılabilecek Lisans Programları) ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
+      <p>Program koşulları ("Bakınızlar" numaraları) için kılavuzdaki açıklamalara bakılmalıdır.</p>
     </div>
     <div class="legal" role="note"><h3>Yasal uyarı</h3><ul>
       <li>Bu sayfadaki veriler ÖSYM'nin kamuya açık yayımladığı PDF belgelerinden derlenmiştir. Sayfa ÖSYM ile bağlantılı değildir ve resmi bir kaynak değildir.</li>
       <li>Veriler otomatik olarak aktarılmıştır; aktarım sırasında hata veya eksiklik olabilir. Kesin doğruluk garanti edilmez.</li>
       <li>Buradaki bilgiler yalnızca genel bilgilendirme amaçlıdır. Tercih, başvuru veya başka bir resmi işlemde veri olarak kullanılmamalıdır.</li>
+      <li>Ön lisans–lisans eşleştirmesi kılavuzdaki Tablo-2'den otomatik çıkarılmıştır; tercih yapmadan önce kendi bölümünü kılavuzda mutlaka kontrol et.</li>
       <li>Geçmiş yılın en küçük ve en büyük puanları sonraki yerleştirmelerin sonucunu göstermez.</li>
       <li>Kontenjan, puan ve başvuru koşullarının güncel ve resmi hâli için <a href="https://www.osym.gov.tr" target="_blank" rel="noopener">osym.gov.tr</a> adresindeki kılavuz ve tabloları kontrol edin. Bu sayfanın kullanımından doğabilecek sonuçlardan sayfa sahibi sorumlu tutulamaz.</li>
     </ul></div>
@@ -123,42 +138,60 @@
 <script>
 (function(){
   const st=readQuery();
-  if(!st||!st.b.length){location.replace('sorgula.html');return}
+  if(!st){location.replace('sorgula.html');return}
   saveQuery(st);
+  const o=ONBY[st.o];
   document.getElementById('edit').href=queryUrl('sorgula.html',st);
   document.getElementById('fresh').addEventListener('click',()=>{try{sessionStorage.removeItem('dg-q')}catch(e){}});
-  const names=st.b.map(c=>CN[c]);
-  document.getElementById('title').textContent=names.length===CATS.length?'Tüm bölümler':names.length<=2?names.join(' ve '):`${names.length} bölüm`;
-  const tlabel={all:'Devlet ve vakıf (burslu) üniversiteler',D:'Yalnızca devlet üniversiteleri',V:'Yalnızca vakıf üniversiteleri, burslu kontenjan'}[st.t];
-  const sl={uni:'üniversiteye göre A–Z',min:'taban puana göre, yüksekten',minA:'taban puana göre, düşükten',k:'kontenjana göre'}[st.s]||'üniversiteye göre A–Z';
-  document.getElementById('sub').textContent=`${tlabel}${st.q?` · “${st.q}” araması`:''} · ${sl} sıralı`;
-  document.getElementById('chips').innerHTML=names.length>2?names.map(n=>`<span>${esc(n)}</span>`).join(''):'';
-  document.title=`${document.getElementById('title').textContent} · Dikey Geçiş`;
+  const aSet=st.a?new Set(st.a):null;
+  const alans=[...o[2],...o[3]].filter(a=>!aSet||aSet.has(a));
+  document.getElementById('from').textContent=`${o[0]} · Ön lisans bölümü`;
+  document.getElementById('title').textContent=`${o[1].replace(/\s*\*+$/,'')} mezunları için`;
+  const tl=[...st.t].map(t=>TYPE[t]).join(', ');
+  const kl=[...st.k].map(k=>({B:'burslu',I:'indirimli',U:'ücretli'}[k])).join(', ');
+  const sl={uni:'üniversiteye göre',alan:'lisans alanına göre',min:'taban puana göre (yüksekten)',minA:'taban puana göre (düşükten)',k:'kontenjana göre'}[st.s]||'üniversiteye göre';
+  document.getElementById('sub').textContent=`${tl} üniversiteleri${(st.t.includes('V')||st.t.includes('K'))?` · vakıf/KKTC: ${kl||'kontenjan türü seçilmedi'}`:''}${st.q?` · “${st.q}” araması`:''} · ${sl} sıralı`;
+  document.getElementById('chips').innerHTML=alans.map(a=>`<span class="${o[2].includes(a)?'':'ao'}">${esc(D.LA[a][0])}</span>`).join('');
+  document.title=`${o[1]} · Dikey Geçiş`;
   const ql=low(st.q||'');
-  const R=DATA.filter(r=>st.b.includes(r[6])&&(st.t==='all'||r[0]===st.t)&&(!ql||low(r[1]+' '+r[3]+' '+r[2]).includes(ql)));
-  function prow(r,uni){
-    const one=r[8]===r[9];
-    return `<div class="p"><div class="nm">${uni?`<small>${esc(r[1])} <span class="tag ${r[0]}">${r[0]==='D'?'Devlet':'Vakıf'}</span></small>`:''}<b>${esc(r[3])}</b><span class="pill">${r[4]}</span></div>
-    <div class="cd">${r[2]}</div><div class="kt">${r[5]}<small>KONT.</small></div>
-    <div class="sc"><div class="nums"><b>${f3(r[8])}</b><span>${one?'tek yerleşen':f3(r[9])}</span></div>${rangeBar(r[0].toLowerCase(),r[8],r[9],'','thin')}</div></div>`}
+  const R=eligible(o,aSet).filter(p=>st.t.includes(p[0])&&(p[8]===''||st.k.includes(p[8][0]))&&(!ql||low(D.U[p[1]]+' '+p[4]+' '+p[3]).includes(ql)));
+  const isAO=p=>p[13]&&!o[2].includes(p[7]);
+  function prow(r,showUni){
+    const one=r[11]!=null&&r[11]===r[12];
+    const bak=r[9]?`<span class="mini kos" title="Kılavuzdaki Bakınızlar numaraları">Koşul ${esc(r[9])}</span>`:'';
+    return `<div class="p"><div class="nm">${showUni?`<span class="u">${esc(D.U[r[1]])} <span class="tag ${r[0]==='D'?'D':'V'}">${TYPE[r[0]]}</span></span>`:''}
+      <b>${esc(r[4])}</b><span class="meta"><span class="mini">${r[5]}</span>${r[8]==='B'?'<span class="mini b">Burslu</span>':''}${isAO(r)?'<span class="mini ao">Açıköğretim ek hakkı</span>':''}${bak}<span class="mini" style="background:none;padding-left:0">${esc(D.F[r[2]]||'')}</span></span></div>
+      <div class="cd">${r[3]}</div><div class="kt">${r[6]}<small>KONT.</small></div>
+      <div class="sc">${r[11]==null?`<span class="none">Yerleşen yok</span>`:`<div class="nums"><b>${f3(r[11])}</b><span>${one?'tek yerleşen':f3(r[12])}</span></div>${rangeBar(r[5],r[11],r[12],'thin')}`}</div></div>`}
+  let shown=0;const PAGE=60;let groups=[];
+  function build(){
+    if(st.s==='uni'||st.s==='alan'||!st.s){
+      const key=st.s==='alan'?(r=>r[7]):(r=>r[0]+'|'+r[1]);
+      const by=new Map();
+      R.slice().sort(st.s==='alan'?((a,b)=>coll.compare(D.LA[a[7]][0],D.LA[b[7]][0])||'DVK'.indexOf(a[0])-'DVK'.indexOf(b[0])||(b[11]??0)-(a[11]??0)):((a,b)=>'DVK'.indexOf(a[0])-'DVK'.indexOf(b[0])||coll.compare(D.U[a[1]],D.U[b[1]])||coll.compare(a[4],b[4]))).forEach(r=>{const k=key(r);if(!by.has(k))by.set(k,[]);by.get(k).push(r)});
+      groups=[...by.values()].map(L=>({L,head:st.s==='alan'?`<h2>${esc(D.LA[L[0][7]][0])}</h2><span class="mini">${D.LA[L[0][7]][1]}</span>`:`<h2>${esc(D.U[L[0][1]])}</h2><span class="tag ${L[0][0]==='D'?'D':'V'}">${TYPE[L[0][0]]}</span>`,uni:st.s==='alan'}));
+    }else{
+      const cmp={min:(a,b)=>(b[11]??-1)-(a[11]??-1),minA:(a,b)=>(a[11]??1e9)-(b[11]??1e9),k:(a,b)=>b[6]-a[6]||(b[11]??0)-(a[11]??0)}[st.s];
+      const S=R.slice().sort(cmp);groups=[];for(let i=0;i<S.length;i+=30)groups.push({L:S.slice(i,i+30),head:null,uni:true});
+    }
+  }
+  function drawMore(){
+    const list=document.getElementById('list');let h='',n=0;
+    while(shown<groups.length&&n<PAGE){const g=groups[shown++];n+=g.L.length;
+      h+=`<section class="uni">${g.head?`<div class="uh">${g.head}<span class="s">${g.L.length} program · ${g.L.reduce((s,r)=>s+r[6],0)} kont.</span></div>`:''}${g.L.map(r=>prow(r,g.uni)).join('')}</section>`}
+    list.insertAdjacentHTML('beforeend',h);
+    const m=document.getElementById('morebtn');
+    if(shown>=groups.length)m.hidden=true;else{m.hidden=false;m.textContent=`Daha fazla göster (${tr(groups.slice(shown).reduce((s,g)=>s+g.L.length,0))} program kaldı)`}
+  }
   function render(){
     const out=document.getElementById('out');
-    if(!R.length){out.innerHTML=`<div class="empty"><b>Bu seçimle eşleşen program yok.</b><p>Bölüm seçimini veya aramayı değiştirip tekrar dene.</p><a class="btn primary" href="${queryUrl('sorgula.html',st)}">Sorguyu düzenle</a></div>`;return}
-    const kd=R.filter(r=>r[0]==='D').reduce((a,r)=>a+r[5],0),kv=R.filter(r=>r[0]==='V').reduce((a,r)=>a+r[5],0);
-    const mins=R.map(r=>r[8]).filter(v=>v!=null);
-    let h=`<div class="kpis"><div><b>${tr(R.length)}</b><span>Program</span></div><div><b>${tr(new Set(R.map(r=>r[1])).size)}</b><span>Üniversite</span></div>${st.t!=='V'?`<div class="d"><b>${tr(kd)}</b><span>Devlet kont.</span></div>`:''}${st.t!=='D'?`<div class="v"><b>${tr(kv)}</b><span>Burslu kont.</span></div>`:''}<div><b>${f1(Math.min(...mins))}–${f1(Math.max(...mins))}</b><span>Taban aralığı</span></div></div>
-    <div class="colh"><span>Program</span><span>Kod</span><span>Kont.</span><span>En küçük · en büyük puan</span></div><div class="list">`;
-    if(st.s==='uni'||!st.s){
-      const by=new Map();
-      R.slice().sort((a,b)=>a[0].localeCompare(b[0])||coll.compare(a[1],b[1])||coll.compare(a[3],b[3])).forEach(r=>{const k=r[0]+r[1];if(!by.has(k))by.set(k,[]);by.get(k).push(r)});
-      let i=0;
-      for(const L of by.values()){const t=L[0][0];
-        h+=`<section class="uni" style="animation-delay:${Math.min(i++*25,400)}ms"><div class="uh"><h2>${esc(L[0][1])}</h2><span class="tag ${t}">${t==='D'?'Devlet':'Vakıf · burslu'}</span><span class="s">${L.length} program · ${L.reduce((s,r)=>s+r[5],0)} kont.</span></div>${L.map(r=>prow(r,false)).join('')}</section>`}
-    }else{
-      const cmp={min:(a,b)=>b[8]-a[8],minA:(a,b)=>a[8]-b[8],k:(a,b)=>b[5]-a[5]||b[8]-a[8]}[st.s];
-      h+=`<section class="uni">${R.slice().sort(cmp).map(r=>prow(r,true)).join('')}</section>`;
-    }
-    out.innerHTML=h+'</div>';
+    if(!R.length){out.innerHTML=`<div class="empty"><b>Bu seçimle eşleşen program yok.</b><p>Lisans alanlarını, üniversite türünü veya aramayı değiştirip tekrar dene.</p><a class="btn primary" href="${queryUrl('sorgula.html',st)}">Sorguyu düzenle</a></div>`;return}
+    const pts=[...new Set(R.map(r=>r[5]))];
+    out.innerHTML=`<div class="kpis"><div><b>${tr(R.length)}</b><span>Program</span></div><div><b>${tr(new Set(R.map(r=>r[1])).size)}</b><span>Üniversite</span></div><div><b>${tr(R.reduce((s,r)=>s+r[6],0))}</b><span>Kontenjan</span></div><div><b>${new Set(R.map(r=>r[7])).size}</b><span>Lisans alanı</span></div></div>
+    <div class="legend2">${pts.map(p=>`<span><i class="sw ${p}"></i>${p} puanı</span>`).join('')}<span>Çubuk: en küçük–en büyük yerleşen puanı (ölçek ${LO}–${HI})</span></div>
+    <div class="colh"><span>Program</span><span>Kod</span><span>Kont.</span><span>En küçük · en büyük puan</span></div><div id="list"></div><div class="more"><button class="btn ghost" id="morebtn" hidden></button></div>`;
+    build();drawMore();
+    document.getElementById('morebtn').onclick=drawMore;
   }
   const fast=matchMedia('(prefers-reduced-motion: reduce)').matches;
   setTimeout(render,fast?500:1300);
