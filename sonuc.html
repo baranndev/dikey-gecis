@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Sorgu Sonucu · Dikey Geçiş</title>
+<meta name="description" content="Seçtiğin bölümlerin dikey geçiş programları, kontenjanları ve puanları.">
+<meta name="theme-color" content="#c23a57">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dikey Geçiş">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+
+.rhead{padding-block:40px 28px;border-bottom:1px solid var(--rule)}
+.rtools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.rhead h1{font-size:clamp(32px,4.6vw,56px);line-height:1.02;font-weight:700;letter-spacing:-.03em;margin:16px 0 12px}
+.rhead .sub{color:var(--soft);margin:0;max-width:72ch}
+.chipset{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+.chipset span{font:500 12px var(--f-mono);padding:4px 10px;border-radius:999px;background:var(--sheet);border:1px solid var(--rule);color:var(--soft)}
+.kpis{display:flex;gap:32px;flex-wrap:wrap;margin-top:24px}
+.kpis div{display:flex;flex-direction:column;gap:2px}
+.kpis b{font:700 30px/1 var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.kpis span{font:11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.kpis .d b{color:var(--blue)} .kpis .v b{color:var(--form)}
+
+.loading{display:flex;flex-direction:column;align-items:center;gap:22px;padding:96px 0 120px;text-align:center}
+.loading b{font:600 20px var(--f-display);letter-spacing:-.01em}
+.loading p{margin:0;color:var(--soft);font-size:14.5px}
+.bubbles{display:grid;grid-template-columns:repeat(5,22px);gap:10px}
+.bubbles i{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--form);animation:fill 1.5s ease-in-out infinite}
+.bubbles i:nth-child(2){animation-delay:.12s}.bubbles i:nth-child(3){animation-delay:.24s}.bubbles i:nth-child(4){animation-delay:.36s}.bubbles i:nth-child(5){animation-delay:.48s}
+@keyframes fill{0%,100%{background:transparent;transform:scale(1)}40%{background:var(--form);transform:scale(1.08)}}
+.prog{width:min(280px,70vw);height:3px;background:var(--track);border-radius:3px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--form);animation:prog 1.3s cubic-bezier(.4,.1,.2,1) forwards}
+@keyframes prog{to{width:100%}}
+@media (prefers-reduced-motion:reduce){.bubbles i{animation:none;background:var(--form-soft)}.prog i{animation:none;width:60%}}
+
+.list{padding-top:8px}
+.uni{padding-top:28px;animation:rise .4s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.uni{animation:none}}
+.uh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.uh h2{font-size:17px;line-height:1.3;letter-spacing:-.005em}
+.uh .s{margin-left:auto;font:12px var(--f-mono);color:var(--soft)}
+.p{display:grid;grid-template-columns:minmax(0,1fr) 6rem 4rem minmax(0,16rem);gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--rule-2)}
+.p .nm{min-width:0}
+.p .nm b{font-weight:500}
+.p .nm small{display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--soft);margin-bottom:2px;flex-wrap:wrap}
+.p .cd{font:12.5px var(--f-mono);color:var(--soft)}
+.p .kt{font:500 16px var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.p .kt small{display:block;font:10px var(--f-mono);color:var(--faint);letter-spacing:.06em}
+.sc{display:flex;flex-direction:column;gap:4px;min-width:0}
+.sc .nums{display:flex;justify-content:space-between;font:12.5px var(--f-mono);font-variant-numeric:tabular-nums}
+.sc .nums b{font-weight:500}
+.sc .nums span{color:var(--faint)}
+.colh{display:grid;grid-template-columns:minmax(0,1fr) 6rem 4rem minmax(0,16rem);gap:20px;padding:20px 0 0;font:10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.colh span:nth-child(3){text-align:right}
+.empty{padding:80px 0;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
+.empty b{font:600 20px var(--f-display)}
+.empty p{margin:0;color:var(--soft)}
+@media (max-width:760px){
+  .colh{display:none}
+  .p{grid-template-columns:minmax(0,1fr) auto;gap:8px 14px}
+  .p .cd{order:3}
+  .p .sc{grid-column:1/-1;order:4}
+  .kpis{gap:20px}
+}
+
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap">
+  <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
+  <nav aria-label="Ana menü">
+    <a href="index.html#bolumler" class="hide-sm">Bölümler</a>
+    <a href="index.html#harita" class="hide-sm">Puan haritası</a>
+    <a href="index.html#kaynak" class="hide-sm">Kaynak</a>
+    <a class="btn primary sm" href="sorgula.html">Sorgula</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <div class="rhead">
+    <div class="rtools"><a class="btn ghost sm" id="edit" href="sorgula.html">← Sorguyu düzenle</a><a class="btn ghost sm" href="sorgula.html" id="fresh">Yeni sorgu</a></div>
+    <span class="eyebrow">Sorgu sonucu</span>
+    <h1 id="title">Programlar</h1>
+    <p class="sub" id="sub"></p>
+    <div class="chipset" id="chips"></div>
+  </div>
+  <div id="out" aria-live="polite">
+    <div class="loading" role="status"><div class="bubbles"><i></i><i></i><i></i><i></i><i></i></div><b>Liste hazırlanıyor, lütfen bekleyin…</b><div class="prog"><i></i></div><p>Programlar puanlarıyla eşleştiriliyor.</p></div>
+  </div>
+</main>
+<footer class="foot" id="kaynak"><div class="wrap">
+  <div class="grid">
+    <div>
+      <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
+      <p>2026 DGS'de bilgisayar, yazılım, bilişim ve istatistik alanındaki on lisans programı için kontenjan ve yerleştirme puanlarını tek yerde toplayan bağımsız bir bilgi sayfası.</p>
+      <p><b>Kaynak:</b> ÖSYM, Tablo-1 Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Yükseköğretim Lisans Programları ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
+      <p>Devlet üniversitelerinin tüm kontenjanları, vakıf üniversitelerinin yalnızca burslu kontenjanları yer alır. KKTC üniversiteleri listede yoktur.</p>
+    </div>
+    <div class="legal" role="note"><h3>Yasal uyarı</h3><ul>
+      <li>Bu sayfadaki veriler ÖSYM'nin kamuya açık yayımladığı PDF belgelerinden derlenmiştir. Sayfa ÖSYM ile bağlantılı değildir ve resmi bir kaynak değildir.</li>
+      <li>Veriler otomatik olarak aktarılmıştır; aktarım sırasında hata veya eksiklik olabilir. Kesin doğruluk garanti edilmez.</li>
+      <li>Buradaki bilgiler yalnızca genel bilgilendirme amaçlıdır. Tercih, başvuru veya başka bir resmi işlemde veri olarak kullanılmamalıdır.</li>
+      <li>Geçmiş yılın en küçük ve en büyük puanları sonraki yerleştirmelerin sonucunu göstermez.</li>
+      <li>Kontenjan, puan ve başvuru koşullarının güncel ve resmi hâli için <a href="https://www.osym.gov.tr" target="_blank" rel="noopener">osym.gov.tr</a> adresindeki kılavuz ve tabloları kontrol edin. Bu sayfanın kullanımından doğabilecek sonuçlardan sayfa sahibi sorumlu tutulamaz.</li>
+    </ul></div>
+  </div>
+  <div class="copy"><span>Veri: ÖSYM · 2026 DGS</span><span>Resmi kaynak değildir</span></div>
+</div></footer>
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script>
+(function(){
+  const st=readQuery();
+  if(!st||!st.b.length){location.replace('sorgula.html');return}
+  saveQuery(st);
+  document.getElementById('edit').href=queryUrl('sorgula.html',st);
+  document.getElementById('fresh').addEventListener('click',()=>{try{sessionStorage.removeItem('dg-q')}catch(e){}});
+  const names=st.b.map(c=>CN[c]);
+  document.getElementById('title').textContent=names.length===CATS.length?'Tüm bölümler':names.length<=2?names.join(' ve '):`${names.length} bölüm`;
+  const tlabel={all:'Devlet ve vakıf (burslu) üniversiteler',D:'Yalnızca devlet üniversiteleri',V:'Yalnızca vakıf üniversiteleri, burslu kontenjan'}[st.t];
+  const sl={uni:'üniversiteye göre A–Z',min:'taban puana göre, yüksekten',minA:'taban puana göre, düşükten',k:'kontenjana göre'}[st.s]||'üniversiteye göre A–Z';
+  document.getElementById('sub').textContent=`${tlabel}${st.q?` · “${st.q}” araması`:''} · ${sl} sıralı`;
+  document.getElementById('chips').innerHTML=names.length>2?names.map(n=>`<span>${esc(n)}</span>`).join(''):'';
+  document.title=`${document.getElementById('title').textContent} · Dikey Geçiş`;
+  const ql=low(st.q||'');
+  const R=DATA.filter(r=>st.b.includes(r[6])&&(st.t==='all'||r[0]===st.t)&&(!ql||low(r[1]+' '+r[3]+' '+r[2]).includes(ql)));
+  function prow(r,uni){
+    const one=r[8]===r[9];
+    return `<div class="p"><div class="nm">${uni?`<small>${esc(r[1])} <span class="tag ${r[0]}">${r[0]==='D'?'Devlet':'Vakıf'}</span></small>`:''}<b>${esc(r[3])}</b><span class="pill">${r[4]}</span></div>
+    <div class="cd">${r[2]}</div><div class="kt">${r[5]}<small>KONT.</small></div>
+    <div class="sc"><div class="nums"><b>${f3(r[8])}</b><span>${one?'tek yerleşen':f3(r[9])}</span></div>${rangeBar(r[0].toLowerCase(),r[8],r[9],'','thin')}</div></div>`}
+  function render(){
+    const out=document.getElementById('out');
+    if(!R.length){out.innerHTML=`<div class="empty"><b>Bu seçimle eşleşen program yok.</b><p>Bölüm seçimini veya aramayı değiştirip tekrar dene.</p><a class="btn primary" href="${queryUrl('sorgula.html',st)}">Sorguyu düzenle</a></div>`;return}
+    const kd=R.filter(r=>r[0]==='D').reduce((a,r)=>a+r[5],0),kv=R.filter(r=>r[0]==='V').reduce((a,r)=>a+r[5],0);
+    const mins=R.map(r=>r[8]).filter(v=>v!=null);
+    let h=`<div class="kpis"><div><b>${tr(R.length)}</b><span>Program</span></div><div><b>${tr(new Set(R.map(r=>r[1])).size)}</b><span>Üniversite</span></div>${st.t!=='V'?`<div class="d"><b>${tr(kd)}</b><span>Devlet kont.</span></div>`:''}${st.t!=='D'?`<div class="v"><b>${tr(kv)}</b><span>Burslu kont.</span></div>`:''}<div><b>${f1(Math.min(...mins))}–${f1(Math.max(...mins))}</b><span>Taban aralığı</span></div></div>
+    <div class="colh"><span>Program</span><span>Kod</span><span>Kont.</span><span>En küçük · en büyük puan</span></div><div class="list">`;
+    if(st.s==='uni'||!st.s){
+      const by=new Map();
+      R.slice().sort((a,b)=>a[0].localeCompare(b[0])||coll.compare(a[1],b[1])||coll.compare(a[3],b[3])).forEach(r=>{const k=r[0]+r[1];if(!by.has(k))by.set(k,[]);by.get(k).push(r)});
+      let i=0;
+      for(const L of by.values()){const t=L[0][0];
+        h+=`<section class="uni" style="animation-delay:${Math.min(i++*25,400)}ms"><div class="uh"><h2>${esc(L[0][1])}</h2><span class="tag ${t}">${t==='D'?'Devlet':'Vakıf · burslu'}</span><span class="s">${L.length} program · ${L.reduce((s,r)=>s+r[5],0)} kont.</span></div>${L.map(r=>prow(r,false)).join('')}</section>`}
+    }else{
+      const cmp={min:(a,b)=>b[8]-a[8],minA:(a,b)=>a[8]-b[8],k:(a,b)=>b[5]-a[5]||b[8]-a[8]}[st.s];
+      h+=`<section class="uni">${R.slice().sort(cmp).map(r=>prow(r,true)).join('')}</section>`;
+    }
+    out.innerHTML=h+'</div>';
+  }
+  const fast=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  setTimeout(render,fast?500:1300);
+})();
+</script>
+</body>
+</html>
