@@ -151,7 +151,7 @@
   const kl=[...st.k].map(k=>({B:'burslu',I:'indirimli',U:'ücretli'}[k])).join(', ');
   const sl={uni:'üniversiteye göre',alan:'lisans alanına göre',min:'taban puana göre (yüksekten)',minA:'taban puana göre (düşükten)',k:'kontenjana göre'}[st.s]||'üniversiteye göre';
   document.getElementById('sub').textContent=`${tl} üniversiteleri${(st.t.includes('V')||st.t.includes('K'))?` · vakıf/KKTC: ${kl||'kontenjan türü seçilmedi'}`:''}${st.q?` · “${st.q}” araması`:''} · ${sl} sıralı`;
-  document.getElementById('chips').innerHTML=alans.map(a=>`<span class="${o[2].includes(a)?'':'ao'}">${esc(D.LA[a][0])}</span>`).join('');
+  document.getElementById('chips').innerHTML=alans.map(a=>`<span class="${o[2].includes(a)?'':'ao'}">${esc(D.LA[a][0])}${o[2].includes(a)?'':' · yalnızca açıköğretim'}</span>`).join('');
   document.title=`${o[1]} · Dikey Geçiş`;
   const ql=low(st.q||'');
   const R=eligible(o,aSet).filter(p=>st.t.includes(p[0])&&(p[8]===''||st.k.includes(p[8][0]))&&(!ql||low(D.U[p[1]]+' '+p[4]+' '+p[3]).includes(ql)));
@@ -160,7 +160,7 @@
     const one=r[11]!=null&&r[11]===r[12];
     const bak=r[9]?`<span class="mini kos" title="Kılavuzdaki Bakınızlar numaraları">Koşul ${esc(r[9])}</span>`:'';
     return `<div class="p"><div class="nm">${showUni?`<span class="u">${esc(D.U[r[1]])} <span class="tag ${r[0]==='D'?'D':'V'}">${TYPE[r[0]]}</span></span>`:''}
-      <b>${esc(r[4])}</b><span class="meta"><span class="mini">${r[5]}</span>${r[8]==='B'?'<span class="mini b">Burslu</span>':''}${isAO(r)?'<span class="mini ao">Açıköğretim ek hakkı</span>':''}${bak}<span class="mini" style="background:none;padding-left:0">${esc(D.F[r[2]]||'')}</span></span></div>
+      <b>${esc(r[4])}</b><span class="meta"><span class="mini">${r[5]}</span>${r[8]==='B'?'<span class="mini b">Burslu</span>':''}${isAO(r)?'<span class="mini ao" title="Bu programa bölümünden yalnızca açıköğretim fakültesinde olduğu için geçebilirsin">Yalnızca açıköğretimde geçerli</span>':''}${bak}<span class="mini" style="background:none;padding-left:0">${esc(D.F[r[2]]||'')}</span></span></div>
       <div class="cd">${r[3]}</div><div class="kt">${r[6]}<small>KONT.</small></div>
       <div class="sc">${r[11]==null?`<span class="none">Yerleşen yok</span>`:`<div class="nums"><b>${f3(r[11])}</b><span>${one?'tek yerleşen':f3(r[12])}</span></div>${rangeBar(r[5],r[11],r[12],'thin')}`}</div></div>`}
   let shown=0;const PAGE=60;let groups=[];

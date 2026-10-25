@@ -181,9 +181,9 @@ input[type=search],select{background:var(--paper);border:1px solid var(--rule);b
     else if(cur[1].includes('*')){pn.hidden=false;pn.textContent='Not: Bu satır, 1996–1998 yılları arasında öğrenci alan ODTÜ MYO Endüstriyel Otomasyon programı mezunları içindir.'}
     else pn.hidden=true;
     const cnt=a=>D.P.filter(p=>p[7]===a).length;
-    const box=(a,ao)=>`<label class="opt"><input type="checkbox" name="a" value="${a}" id="a-${a}" checked><span class="bub"></span><span><b>${esc(D.LA[a][0])}</b><small>${D.LA[a][1]} · ${ao?'yalnız açıköğretim':cnt(a)+' program'}</small></span></label>`;
+    const box=(a,ao)=>`<label class="opt"><input type="checkbox" name="a" value="${a}" id="a-${a}" checked><span class="bub"></span><span><b>${esc(D.LA[a][0])}</b><small>${D.LA[a][1]} · ${ao?'sadece açıköğretim fakültelerinde':cnt(a)+' program'}</small></span></label>`;
     const g=cur[2].slice().sort((x,y)=>coll.compare(D.LA[x][0],D.LA[y][0])),ao=cur[3].slice().sort((x,y)=>coll.compare(D.LA[x][0],D.LA[y][0]));
-    document.getElementById('alans').innerHTML=`<div class="opts">${g.map(a=>box(a,0)).join('')}</div>`+(ao.length?`<div class="grp" style="margin-top:14px">Açıköğretim ek hakları (Anadolu, Atatürk, İstanbul)</div><div class="opts" style="margin-top:8px">${ao.map(a=>box(a,1)).join('')}</div>`:'');
+    document.getElementById('alans').innerHTML=`<div class="opts">${g.map(a=>box(a,0)).join('')}</div>`+(ao.length?`<div class="grp" style="margin-top:18px">Yalnızca açıköğretimde geçerli</div><p class="note" style="margin-top:6px">Bu alanlara sadece Anadolu Üniversitesi Açıköğretim, Atatürk Üniversitesi Açık ve Uzaktan Öğretim ve İstanbul Üniversitesi Açık ve Uzaktan Eğitim fakültelerinin programlarında geçebilirsin. Örgün (normal) programlarda bu hak yoktur. İstemiyorsan işaretlerini kaldır.</p><div class="opts" style="margin-top:8px">${ao.map(a=>box(a,1)).join('')}</div>`:'');
     if(keepSel&&st0&&st0.a){const s=new Set(st0.a);form.querySelectorAll('input[name=a]').forEach(i=>i.checked=s.has(i.value))}
     ['s2','s3','s4'].forEach(id=>document.getElementById(id).classList.remove('off'));
     upd();
