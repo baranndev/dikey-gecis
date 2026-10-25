@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Tercih Listesi · Dikey Geçiş</title>
+<meta name="description" content="DGS puanına ve kriterlerine uygun programları bul, tercih listeni oluştur, PDF indir veya paylaş.">
+<meta name="theme-color" content="#c23a57">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dikey Geçiş">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+
+.thead{padding-block:52px 28px}
+.thead h1{font-size:clamp(36px,5vw,60px);line-height:1;font-weight:700;letter-spacing:-.03em;margin:18px 0 14px}
+.tgrid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:28px;align-items:start}
+.panel{background:var(--sheet);border:1px solid var(--rule);border-radius:20px;box-shadow:var(--shadow)}
+.blk{padding:26px 28px;border-top:1px solid var(--rule-2);display:flex;flex-direction:column;gap:14px}
+.blk:first-child{border-top:0}
+.blk h2{font-size:19px;letter-spacing:-.01em;display:flex;gap:12px;align-items:center}
+.blk h2 .n{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--form);color:var(--form);display:grid;place-items:center;font:600 12.5px var(--f-mono);flex:none}
+.blk .note{font-size:13.5px;color:var(--soft);margin:0}
+.blk.off{opacity:.45;pointer-events:none}
+.hrow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.link{border:0;background:none;color:var(--form);font:500 14px var(--f-body);cursor:pointer;padding:4px 0}
+.search .box{box-shadow:none;background:var(--paper)}
+.picked{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;background:var(--form-soft);border:1px solid var(--form)}
+.picked b{font:600 17px var(--f-display)}
+.picked small{display:block;font:12px var(--f-mono);color:var(--soft)}
+.scores{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sfld{display:flex;flex-direction:column;gap:6px}
+.sfld label{font:600 12px var(--f-mono);letter-spacing:.06em;color:var(--soft)}
+.sfld input{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;font:500 17px var(--f-mono);min-width:0;width:100%;font-variant-numeric:tabular-nums}
+.sfld input:focus{outline:2px solid var(--form);outline-offset:1px}
+.sfld small{font-size:12px;color:var(--faint)}
+.chips2{display:flex;gap:6px;flex-wrap:wrap}
+.ck{position:relative;display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid var(--rule);border-radius:999px;cursor:pointer;background:var(--paper);font-size:13.5px;font-weight:500}
+.ck input{position:absolute;opacity:0;pointer-events:none}
+.ck small{font:11px var(--f-mono);color:var(--faint)}
+.ck:has(input:checked){border-color:var(--form);background:var(--form-soft)}
+.ck:has(input:checked)::before{content:"✓";color:var(--form);font-weight:700;font-size:12px}
+.ck:has(input:focus-visible){outline:2px solid var(--form);outline-offset:2px}
+.ck.ao{border-style:dashed}
+.picker{display:flex;flex-direction:column;gap:10px}
+.picker input[type=search]{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:10px 12px;font-size:14.5px;min-width:0;width:100%}
+.picker .pool{max-height:210px;overflow:auto;padding:2px;border-radius:10px}
+.sel{display:flex;gap:6px;flex-wrap:wrap}
+.sel button{border:0;background:var(--ink);color:var(--paper);border-radius:999px;padding:6px 10px 6px 12px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.sel button::after{content:"×";opacity:.7}
+.sel .all{background:transparent;color:var(--soft);border:1px dashed var(--rule);cursor:default}
+.sel .all::after{content:none}
+.toggles{display:flex;gap:8px;flex-wrap:wrap}
+.tg{position:relative;display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid var(--rule);border-radius:999px;cursor:pointer;background:var(--paper);font-weight:500;font-size:14px}
+.tg input{position:absolute;opacity:0;pointer-events:none}
+.tg::before{content:"";width:15px;height:15px;border-radius:5px;border:1.5px solid var(--form);flex:none}
+.tg:has(input:checked){border-color:var(--form);background:var(--form-soft)}
+.tg:has(input:checked)::before{background:var(--form);box-shadow:inset 0 0 0 3px var(--form-soft)}
+.tg:has(input:focus-visible){outline:2px solid var(--form);outline-offset:2px}
+.sub2{display:flex;flex-direction:column;gap:8px}
+.sub2 .lbl{font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.gobar{padding:20px 28px;background:var(--rule-2);border-radius:0 0 20px 20px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.gobar .hint{font-size:14px;color:var(--soft)}
+
+/* sonuçlar */
+#res{margin-top:28px}
+.loading{display:flex;flex-direction:column;align-items:center;gap:20px;padding:72px 0;text-align:center}
+.loading b{font:600 19px var(--f-display)}
+.bubbles{display:grid;grid-template-columns:repeat(5,20px);gap:10px}
+.bubbles i{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--form);animation:fill 1.5s ease-in-out infinite}
+.bubbles i:nth-child(2){animation-delay:.12s}.bubbles i:nth-child(3){animation-delay:.24s}.bubbles i:nth-child(4){animation-delay:.36s}.bubbles i:nth-child(5){animation-delay:.48s}
+@keyframes fill{0%,100%{background:transparent}40%{background:var(--form)}}
+@media (prefers-reduced-motion:reduce){.bubbles i{animation:none;background:var(--form-soft)}}
+.rtop{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--rule)}
+.rtop h2{font-size:clamp(24px,3vw,32px)}
+.rtop p{margin:6px 0 0;color:var(--soft);font-size:14.5px}
+.rtop select{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:9px 12px;font-size:14px}
+.sfilter{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.sfilter button{border:1px solid var(--rule);background:var(--sheet);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.sfilter button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.sfilter button b{font:600 12px var(--f-mono)}
+.r{display:grid;grid-template-columns:minmax(0,1fr) 9.5rem 7rem auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--rule-2)}
+.r .nm{min-width:0;display:flex;flex-direction:column;gap:3px}
+.r .nm .u{font-size:12.5px;color:var(--soft)}
+.r .nm b{font-weight:600;font-size:15px}
+.r .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.mini{font:500 10.5px var(--f-mono);padding:2px 7px;border-radius:5px;background:var(--track);color:var(--soft);white-space:nowrap}
+.mini.b{background:var(--form-soft);color:var(--form)}
+.mini.ao{background:transparent;border:1px dashed var(--form);color:var(--form)}
+.r .sc{font:12.5px var(--f-mono);font-variant-numeric:tabular-nums;display:flex;flex-direction:column;gap:2px}
+.r .sc span{color:var(--faint)}
+.r .df{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.r .df b{font:600 14px var(--f-mono);font-variant-numeric:tabular-nums}
+.add{border:1.5px solid var(--form);background:transparent;color:var(--form);border-radius:999px;padding:8px 14px;font:600 13.5px var(--f-body);cursor:pointer;white-space:nowrap;min-width:92px}
+.add:hover{background:var(--form-soft)}
+.add.on{background:var(--form);color:var(--on-form)}
+.add:disabled{opacity:.4;cursor:not-allowed}
+.morewrap{display:flex;justify-content:center;padding:24px 0}
+.empty{padding:56px 0;text-align:center;color:var(--soft)}
+.empty b{display:block;font:600 19px var(--f-display);color:var(--ink);margin-bottom:6px}
+
+/* tercih listem */
+.mylist{position:sticky;top:calc(env(safe-area-inset-top,0px) + 84px);display:flex;flex-direction:column;max-height:calc(100vh - 110px)}
+.ml-h{padding:20px 22px 14px;border-bottom:1px solid var(--rule-2);display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ml-h h2{font-size:19px}
+.ml-h span{font:600 13px var(--f-mono);color:var(--soft)}
+.ml-b{overflow:auto;padding:8px 14px;flex:1;min-height:120px}
+.ml-empty{padding:28px 10px;color:var(--soft);font-size:14px;text-align:center}
+.it{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 6px;border-bottom:1px dashed var(--rule)}
+.it .no{width:26px;height:26px;border-radius:50%;background:var(--form);color:var(--on-form);display:grid;place-items:center;font:600 12px var(--f-mono)}
+.it .tx{min-width:0}
+.it .tx b{display:block;font-size:13.5px;font-weight:600;line-height:1.25}
+.it .tx small{display:block;font-size:12px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.it .ac{display:flex;gap:2px}
+.it .ac button{width:28px;height:28px;border:0;background:transparent;border-radius:8px;cursor:pointer;color:var(--soft);font-size:14px}
+.it .ac button:hover{background:var(--rule-2);color:var(--ink)}
+.it .ac button:disabled{opacity:.25;cursor:default}
+.ml-f{padding:16px 18px 18px;border-top:1px solid var(--rule-2);display:grid;gap:8px}
+.ml-f .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ml-f .btn{width:100%;padding:12px 14px;font-size:14px}
+.ml-f .clr{border:0;background:none;color:var(--soft);font-size:13px;cursor:pointer;justify-self:center;padding:4px}
+.mbar{display:none}
+@media (max-width:980px){
+  .tgrid{grid-template-columns:minmax(0,1fr)}
+  .mylist{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:40;max-height:78vh;border-radius:20px 20px 0 0;transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);padding-bottom:env(safe-area-inset-bottom,0px)}
+  .mylist.open{transform:none}
+  .mbar{display:flex;position:fixed;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:35;align-items:center;justify-content:space-between;gap:12px;background:var(--ink);color:var(--paper);border-radius:16px;padding:10px 10px 10px 18px;box-shadow:0 12px 30px -10px rgba(0,0,0,.4)}
+  .mbar b{font:600 15px var(--f-display)}
+  .mbar .btn{padding:10px 16px;font-size:14px}
+  .shade{position:fixed;inset:0;z-index:39;background:rgba(0,0,0,.4)}
+  main{padding-bottom:80px}
+}
+@media (max-width:640px){
+  .blk{padding:20px}
+  .gobar{padding:16px 20px}.gobar .btn{width:100%}
+  .scores{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .sfld input{padding:10px;font-size:15px}
+  .r{grid-template-columns:minmax(0,1fr) auto;gap:8px 12px}
+  .r .sc{grid-column:1/2;flex-direction:row;gap:10px}
+  .r .df{grid-column:2/3;grid-row:1;align-items:flex-end}
+  .r .addc{grid-column:2/3;grid-row:2;justify-self:end}
+}
+
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap">
+  <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
+  <nav aria-label="Ana menü">
+    <a href="index.html#nasil" class="hide-sm">Nasıl çalışır</a>
+    <a href="index.html#populer" class="hide-sm">Popüler bölümler</a>
+    <a href="index.html#kaynak" class="hide-sm">Kaynak</a>
+    <a class="btn ghost sm" href="tercih.html" aria-current="page">Tercih listesi</a>
+    <a class="btn primary sm" href="sorgula.html">Sorgula</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+<div class="thead">
+  <span class="eyebrow">Tercih listesi</span>
+  <h1>Puanına uygun programları bul, listeni oluştur.</h1>
+  <p class="lead">Bölümünü, DGS puanlarını ve istediğin illeri gir. Kriterlerine uyan programları 2026 puanlarıyla karşılaştır, en fazla 30 tercihlik listeni oluştur; PDF olarak indir veya bağlantısını paylaş.</p>
+</div>
+<div class="tgrid">
+<div>
+  <form class="panel" id="tf" novalidate>
+    <div class="blk">
+      <h2><span class="n">1</span>Ön lisans bölümün</h2>
+      <div class="search" id="sbox"><div class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="os" type="text" autocomplete="off" placeholder="Bölüm adını yaz…" aria-label="Ön lisans bölümü" role="combobox" aria-controls="osl" aria-expanded="false" aria-autocomplete="list"></div><ul class="sugg" id="osl" role="listbox" hidden></ul></div>
+      <div class="picked" id="picked" hidden><div><small id="pcode"></small><b id="pname"></b></div><button type="button" class="link" id="change">Değiştir</button></div>
+    </div>
+    <div class="blk off" id="b2">
+      <h2><span class="n">2</span>DGS puanların</h2>
+      <p class="note">Hangi puan türlerinde puanın varsa onları yaz. Yalnızca puan girdiğin türlerdeki programlar listelenir.</p>
+      <div class="scores">
+        <div class="sfld"><label for="sc-SAY">SAY</label><input id="sc-SAY" inputmode="decimal" placeholder="örn. 285,4" autocomplete="off"></div>
+        <div class="sfld"><label for="sc-EA">EA</label><input id="sc-EA" inputmode="decimal" placeholder="örn. 270" autocomplete="off"></div>
+        <div class="sfld"><label for="sc-SÖZ">SÖZ</label><input id="sc-SÖZ" inputmode="decimal" placeholder="örn. 260" autocomplete="off"></div>
+      </div>
+    </div>
+    <div class="blk off" id="b3">
+      <div class="hrow"><h2><span class="n">3</span>Gitmek istediğin alanlar</h2><button type="button" class="link" id="aall">Seçimi temizle</button></div>
+      <div class="chips2" id="alans"></div>
+    </div>
+    <div class="blk off" id="b4">
+      <h2><span class="n">4</span>İl ve üniversite</h2>
+      <div class="picker"><div class="hrow"><span class="lbl" style="font:500 11px var(--f-mono);letter-spacing:.08em;color:var(--soft)">İLLER</span></div><div class="sel" id="ilsel"></div><input type="search" id="ilq" placeholder="İl ara (boş bırakırsan tüm iller)"><div class="pool chips2" id="ilpool"></div></div>
+      <div class="picker"><div class="hrow"><span class="lbl" style="font:500 11px var(--f-mono);letter-spacing:.08em;color:var(--soft)">ÜNİVERSİTELER · İSTEĞE BAĞLI</span></div><div class="sel" id="usel"></div><input type="search" id="uq" placeholder="Üniversite ara (boş bırakırsan hepsi)"><div class="pool chips2" id="upool"></div></div>
+    </div>
+    <div class="blk off" id="b5">
+      <h2><span class="n">5</span>Üniversite ve kontenjan türü</h2>
+      <div class="sub2"><span class="lbl">Üniversite türü</span><div class="toggles">
+        <label class="tg"><input type="checkbox" name="t" value="D" id="t-D" checked>Devlet</label>
+        <label class="tg"><input type="checkbox" name="t" value="V" id="t-V" checked>Vakıf</label>
+        <label class="tg"><input type="checkbox" name="t" value="K" id="t-K">KKTC</label></div></div>
+      <div class="sub2"><span class="lbl">Vakıf ve KKTC kontenjanı</span><div class="toggles">
+        <label class="tg"><input type="checkbox" name="k" value="B" id="k-B" checked>Burslu</label>
+        <label class="tg"><input type="checkbox" name="k" value="I" id="k-I">İndirimli</label>
+        <label class="tg"><input type="checkbox" name="k" value="U" id="k-U">Ücretli</label></div></div>
+    </div>
+    <div class="gobar"><span class="hint" id="hint">Önce ön lisans bölümünü seç.</span><button type="submit" class="btn primary" id="go" disabled>Uygun programları listele <span class="arr">→</span></button></div>
+  </form>
+  <section id="res" aria-live="polite"></section>
+</div>
+<aside class="panel mylist" id="mylist" aria-label="Tercih listem">
+  <div class="ml-h"><h2>Tercih listem</h2><span id="mlc">0 / 30</span></div>
+  <div class="ml-b" id="mlb"></div>
+  <div class="ml-f">
+    <div class="row2"><button type="button" class="btn primary" id="pdf" disabled>PDF indir</button><button type="button" class="btn ghost" id="copy" disabled>Bağlantıyı kopyala</button></div>
+    <a class="btn ghost" id="view" href="liste.html" aria-disabled="true">Listeyi görüntüle</a>
+    <button type="button" class="clr" id="clr">Listeyi temizle</button>
+  </div>
+</aside>
+</div>
+</main>
+<div class="mbar" id="mbar"><div><b id="mbc">0 tercih</b></div><button type="button" class="btn primary" id="mopen">Listemi aç</button></div>
+<footer class="foot" id="kaynak"><div class="wrap">
+  <div class="grid">
+    <div>
+      <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
+      <p>Ön lisans bölümüne göre 2026 DGS ile geçilebilecek lisans programlarını, kontenjanlarını ve yerleştirme puanlarını tek yerde toplayan bağımsız bir bilgi sayfası.</p>
+      <p><b>Kaynak:</b> ÖSYM 2026-DGS Tercih Kılavuzu Tablo-1 (Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Lisans Programları), Tablo-2 (Ön Lisans Mezuniyet Alanlarına Göre Dikey Geçiş Yapılabilecek Lisans Programları) ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
+      <p>Program koşulları ("Bakınızlar" numaraları) için kılavuzdaki açıklamalara bakılmalıdır.</p>
+    </div>
+    <div class="legal" role="note"><h3>Yasal uyarı</h3><ul>
+      <li>Bu sayfadaki veriler ÖSYM'nin kamuya açık yayımladığı PDF belgelerinden derlenmiştir. Sayfa ÖSYM ile bağlantılı değildir ve resmi bir kaynak değildir.</li>
+      <li>Veriler otomatik olarak aktarılmıştır; aktarım sırasında hata veya eksiklik olabilir. Kesin doğruluk garanti edilmez.</li>
+      <li>Buradaki bilgiler yalnızca genel bilgilendirme amaçlıdır. Tercih, başvuru veya başka bir resmi işlemde veri olarak kullanılmamalıdır.</li>
+      <li>Ön lisans–lisans eşleştirmesi kılavuzdaki Tablo-2'den otomatik çıkarılmıştır; tercih yapmadan önce kendi bölümünü kılavuzda mutlaka kontrol et.</li>
+      <li>Geçmiş yılın en küçük ve en büyük puanları sonraki yerleştirmelerin sonucunu göstermez.</li>
+      <li>Kontenjan, puan ve başvuru koşullarının güncel ve resmi hâli için <a href="https://www.osym.gov.tr" target="_blank" rel="noopener">osym.gov.tr</a> adresindeki kılavuz ve tabloları kontrol edin. Bu sayfanın kullanımından doğabilecek sonuçlardan sayfa sahibi sorumlu tutulamaz.</li>
+    </ul></div>
+  </div>
+  <div class="copy"><span>Veri: ÖSYM · 2026 DGS</span><span>Resmi kaynak değildir</span></div>
+</div></footer>
+<script src="assets/data.js"></script>
+<script src="assets/common.js"></script>
+<script src="assets/liste.js"></script>
+<script>
+(function(){
+  const KEY='dg-tercih',MAX=30;
+  const S={o:'',sc:{SAY:null,EA:null,'SÖZ':null},a:null,il:[],un:[],t:'DV',k:'B',list:[]};
+  try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==='object')Object.assign(S,s)}catch(e){}
+  // paylaşılan listeden "düzenle" ile gelindiyse
+  const fromLink=readListUrl();
+  if(fromLink){Object.assign(S,{o:fromLink.o,sc:fromLink.sc,il:fromLink.il,t:fromLink.t,k:fromLink.k,list:fromLink.list,a:null,un:[]});history.replaceState(null,'','tercih.html')}
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+  const $=id=>document.getElementById(id);
+  let cur=ONBY[S.o]||null,R=[],shown=0,fil='fit',sort='min';
+
+  // 1. bölüm
+  autocomplete($('os'),$('osl'),x=>{S.o=x.key;S.a=null;S.un=[];setOn();save()});
+  $('change').onclick=()=>{$('picked').hidden=true;$('sbox').hidden=false;$('os').value='';$('os').focus()};
+  function setOn(){
+    cur=ONBY[S.o];if(!cur)return;
+    $('sbox').hidden=true;$('picked').hidden=false;$('pname').textContent=cur[1];$('pcode').textContent='Alan kodu '+cur[0];
+    ['b2','b3','b4','b5'].forEach(id=>$(id).classList.remove('off'));
+    const all=[...cur[2],...cur[3]];
+    const sel=S.a?new Set(S.a):new Set(all);
+    $('alans').innerHTML=all.map(a=>`<label class="ck ${cur[2].includes(a)?'':'ao'}" title="${cur[2].includes(a)?'':'Yalnızca açıköğretim fakültelerinde geçerli'}"><input type="checkbox" name="a" value="${a}" ${sel.has(a)?'checked':''}>${esc(D.LA[a][0])} <small>${D.LA[a][1]}${cur[2].includes(a)?'':' · AÖ'}</small></label>`).join('');
+    drawPickers();upd();
+  }
+  // 2. puanlar
+  PT.forEach(t=>{const i=$('sc-'+t);if(S.sc[t]!=null)i.value=String(S.sc[t]).replace('.',',');i.addEventListener('input',()=>{S.sc[t]=parseScore(i.value);save();upd()})});
+  // 3. alanlar
+  $('alans').addEventListener('change',()=>{const v=[...document.querySelectorAll('input[name=a]:checked')].map(i=>i.value);S.a=v.length===cur[2].length+cur[3].length?null:v;save();drawPickers();upd()});
+  $('aall').onclick=()=>{const on=!document.querySelectorAll('input[name=a]:checked').length;document.querySelectorAll('input[name=a]').forEach(i=>i.checked=on);$('alans').dispatchEvent(new Event('change'))};
+  // 4. il / üniversite seçiciler
+  const base=()=>{if(!cur)return[];const as=S.a?new Set(S.a):null;return eligible(cur,as).filter(p=>S.t.includes(p[0])&&(p[8]===''||S.k.includes(p[8][0])))};
+  function drawPickers(){
+    const B=base();
+    const ilc={};B.forEach(p=>{const c=D.IL[p[1]];ilc[c]=(ilc[c]||0)+1});
+    const iq=norm($('ilq').value);
+    const ils=Object.keys(ilc).sort(coll.compare).filter(c=>!S.il.includes(c)&&(!iq||norm(c).includes(iq)));
+    $('ilsel').innerHTML=S.il.length?S.il.map(c=>`<button type="button" data-il="${esc(c)}" aria-label="${esc(c)} ilini kaldır">${esc(c)}</button>`).join(''):'<span class="all sel"><button type="button" class="all">Tüm iller</button></span>';
+    $('ilpool').innerHTML=ils.slice(0,iq?80:24).map(c=>`<button type="button" class="ck" data-addil="${esc(c)}">${esc(c)} <small>${ilc[c]}</small></button>`).join('')+(!iq&&ils.length>24?`<span class="note" style="font-size:12.5px;color:var(--faint);align-self:center">+${ils.length-24} il · aramayla bul</span>`:'');
+    const B2=S.il.length?B.filter(p=>S.il.includes(D.IL[p[1]])):B;
+    const uc={};B2.forEach(p=>{uc[p[1]]=(uc[p[1]]||0)+1});
+    S.un=S.un.filter(u=>uc[u]);
+    const uq=norm($('uq').value);
+    const us=Object.keys(uc).map(Number).filter(u=>!S.un.includes(u)&&(!uq||norm(D.U[u]).includes(uq))).sort((a,b)=>coll.compare(D.U[a],D.U[b]));
+    $('usel').innerHTML=S.un.length?S.un.map(u=>`<button type="button" data-un="${u}" aria-label="${esc(D.U[u])} kaldır">${esc(D.U[u])}</button>`).join(''):'<span class="all sel"><button type="button" class="all">Tüm üniversiteler</button></span>';
+    $('upool').innerHTML=us.slice(0,uq?60:12).map(u=>`<button type="button" class="ck" data-addun="${u}">${esc(D.U[u])} <small>${uc[u]}</small></button>`).join('')+(!uq&&us.length>12?`<span class="note" style="font-size:12.5px;color:var(--faint);align-self:center">+${us.length-12} üniversite · aramayla bul</span>`:'');
+  }
+  $('ilq').addEventListener('input',drawPickers);$('uq').addEventListener('input',drawPickers);
+  document.getElementById('b4').addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b||b.classList.contains('all'))return;
+    if(b.dataset.addil){S.il.push(b.dataset.addil);$('ilq').value=''}
+    else if(b.dataset.il){S.il=S.il.filter(c=>c!==b.dataset.il)}
+    else if(b.dataset.addun){S.un.push(+b.dataset.addun);$('uq').value=''}
+    else if(b.dataset.un){S.un=S.un.filter(u=>u!==+b.dataset.un)}
+    else return;
+    save();drawPickers();upd();
+  });
+  // 5. türler
+  ['D','V','K'].forEach(t=>{$('t-'+t).checked=S.t.includes(t);$('t-'+t).addEventListener('change',()=>{S.t=['D','V','K'].filter(x=>$('t-'+x).checked).join('');save();drawPickers();upd()})});
+  ['B','I','U'].forEach(k=>{$('k-'+k).checked=S.k.includes(k);$('k-'+k).addEventListener('change',()=>{S.k=['B','I','U'].filter(x=>$('k-'+x).checked).join('');save();drawPickers();upd()})});
+
+  function matches(){
+    const B=base().filter(p=>S.sc[p[5]]!=null);
+    return B.filter(p=>(!S.il.length||S.il.includes(D.IL[p[1]]))&&(!S.un.length||S.un.includes(p[1])));
+  }
+  function upd(){
+    const go=$('go'),h=$('hint');
+    if(!cur){go.disabled=true;h.textContent='Önce ön lisans bölümünü seç.';return}
+    if(!PT.some(t=>S.sc[t]!=null)){go.disabled=true;h.textContent='En az bir puan türünde puanını yaz.';return}
+    const n=matches().length;go.disabled=!n;
+    h.textContent=n?`${tr(n)} program kriterlerine uyuyor.`:'Bu kriterlere uyan program yok. Puan türünü, ili veya türleri değiştir.';
+    $('aall').textContent=document.querySelectorAll('input[name=a]:checked').length?'Seçimi temizle':'Hepsini seç';
+  }
+  // listeleme
+  $('tf').addEventListener('submit',e=>{e.preventDefault();if($('go').disabled)return;
+    $('res').innerHTML='<div class="loading" role="status"><div class="bubbles"><i></i><i></i><i></i><i></i><i></i></div><b>Programlar puanınla karşılaştırılıyor, lütfen bekleyin…</b></div>';
+    $('res').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+    setTimeout(()=>{R=matches();fil=R.some(p=>['ok','near','open'].includes(statusOf(p,S.sc)))?'fit':'all';renderRes()},matchMedia('(prefers-reduced-motion: reduce)').matches?300:1100);
+  });
+  function renderRes(){
+    const cnt={ok:0,near:0,open:0,low:0};R.forEach(p=>cnt[statusOf(p,S.sc)]++);
+    const F={fit:['ok','near','open'],ok:['ok'],near:['near'],open:['open'],low:['low'],all:['ok','near','open','low']}[fil];
+    let L=R.filter(p=>F.includes(statusOf(p,S.sc)));
+    const cmp={min:(a,b)=>(b[11]??-1)-(a[11]??-1),diff:(a,b)=>(diff(b,S.sc)??-999)-(diff(a,S.sc)??-999),uni:(a,b)=>coll.compare(D.U[a[1]],D.U[b[1]])||coll.compare(a[4],b[4]),il:(a,b)=>coll.compare(D.IL[a[1]],D.IL[b[1]])||coll.compare(D.U[a[1]],D.U[b[1]]),k:(a,b)=>b[6]-a[6]}[sort];
+    L.sort(cmp);
+    const btn=(k,t,n)=>`<button type="button" data-f="${k}" aria-pressed="${fil===k}">${t} <b>${n}</b></button>`;
+    $('res').innerHTML=`<div class="rtop"><div><h2>${tr(R.length)} program kriterlerine uyuyor</h2><p>Durum, girdiğin puanın 2026 yerleştirmesindeki en küçük puanla karşılaştırmasıdır.</p></div>
+      <select id="rsort" aria-label="Sıralama"><option value="min">Taban puan (yüksekten)</option><option value="diff">Puan farkı (en güvenli önce)</option><option value="il">İle göre</option><option value="uni">Üniversiteye göre</option><option value="k">Kontenjan (çoktan)</option></select></div>
+      <div class="sfilter">${btn('fit','Uygun olanlar',cnt.ok+cnt.near+cnt.open)}${btn('ok','Tabanın üstünde',cnt.ok)}${btn('near','Sınırda',cnt.near)}${btn('open','Kontenjan dolmadı',cnt.open)}${btn('low','Tabanın altında',cnt.low)}${btn('all','Hepsi',R.length)}</div>
+      <div id="rl"></div><div class="morewrap"><button class="btn ghost" id="rmore" hidden></button></div>`;
+    $('rsort').value=sort;
+    $('rsort').onchange=e=>{sort=e.target.value;renderRes()};
+    document.querySelectorAll('.sfilter button').forEach(b=>b.onclick=()=>{fil=b.dataset.f;renderRes()});
+    shown=0;window._L=L;
+    if(!L.length){$('rl').innerHTML='<div class="empty"><b>Bu durumda program yok.</b>Üstteki filtrelerden başka bir durumu seç.</div>';return}
+    more();$('rmore').onclick=more;
+  }
+  function more(){
+    const L=window._L,part=L.slice(shown,shown+40);shown+=part.length;
+    $('rl').insertAdjacentHTML('beforeend',part.map(row).join(''));
+    const m=$('rmore');m.hidden=shown>=L.length;m.textContent=`Daha fazla göster (${tr(L.length-shown)} kaldı)`;
+  }
+  function row(p){
+    const s=statusOf(p,S.sc),d=diff(p,S.sc),inL=S.list.includes(p[3]);
+    const isAO=p[13]&&!cur[2].includes(p[7]);
+    return `<div class="r"><div class="nm"><span class="u">${esc(D.U[p[1]])} · ${esc(D.IL[p[1]])}</span><b>${esc(p[4])}</b>
+      <span class="meta"><span class="mini">${p[3]}</span><span class="mini">${p[5]}</span><span class="tag ${p[0]==='D'?'D':'V'}">${TYPE[p[0]]}</span>${p[8]==='B'?'<span class="mini b">Burslu</span>':''}${isAO?'<span class="mini ao">Yalnızca açıköğretimde</span>':''}<span class="mini">${p[6]} kont.</span>${p[9]?`<span class="mini" style="background:none;border:1px solid var(--rule)">Koşul ${esc(p[9])}</span>`:''}</span></div>
+      <div class="sc">${p[11]==null?'<span>Yerleşen yok</span>':`<div>${f3(p[11])}</div><span>en büyük ${f3(p[12])}</span>`}</div>
+      <div class="df"><b>${fdiff(d)}</b><span class="st ${s}" title="${STATUS[s].d}">${STATUS[s].t}</span></div>
+      <div class="addc"><button type="button" class="add ${inL?'on':''}" data-add="${p[3]}" ${!inL&&S.list.length>=MAX?'disabled':''}>${inL?'Eklendi ✓':'+ Ekle'}</button></div></div>`;
+  }
+  $('res').addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(!b)return;const c=b.dataset.add;
+    if(S.list.includes(c)){S.list=S.list.filter(x=>x!==c);b.classList.remove('on');b.textContent='+ Ekle'}
+    else{if(S.list.length>=MAX){toast('En fazla 30 tercih ekleyebilirsin.');return}S.list.push(c);b.classList.add('on');b.textContent='Eklendi ✓';toast(`${S.list.length}. tercih olarak eklendi.`)}
+    save();drawList();
+    document.querySelectorAll('.add:not(.on)').forEach(x=>x.disabled=S.list.length>=MAX);
+  });
+  // tercih listem
+  function drawList(){
+    const n=S.list.length;
+    $('mlc').textContent=`${n} / ${MAX}`;$('mbc').textContent=`${n} tercih`;
+    $('mlb').innerHTML=n?S.list.map((c,i)=>{const p=PBY[c];return `<div class="it"><span class="no">${i+1}</span><div class="tx"><b>${esc(p[4])}</b><small>${esc(D.U[p[1]])} · ${p[11]==null?'yerleşen yok':'taban '+f1(p[11])}</small></div>
+      <div class="ac"><button type="button" data-up="${i}" ${i===0?'disabled':''} aria-label="Yukarı taşı">↑</button><button type="button" data-dn="${i}" ${i===n-1?'disabled':''} aria-label="Aşağı taşı">↓</button><button type="button" data-rm="${i}" aria-label="Kaldır">✕</button></div></div>`}).join('')
+      :'<div class="ml-empty">Henüz tercih eklemedin. Programları listeleyip "+ Ekle" ile listeye ekle.</div>';
+    const ok=n>0&&cur;
+    $('pdf').disabled=!ok;$('copy').disabled=!ok;
+    const v=$('view');if(ok){v.href=listUrl(curState());v.removeAttribute('aria-disabled')}else{v.href='#';v.setAttribute('aria-disabled','true')}
+  }
+  const curState=()=>({o:S.o,sc:S.sc,il:S.il,t:S.t,k:S.k,list:S.list,d:new Date().toISOString().slice(0,10)});
+  $('mlb').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const L=S.list;
+    if(b.dataset.up){const i=+b.dataset.up;[L[i-1],L[i]]=[L[i],L[i-1]]}
+    else if(b.dataset.dn){const i=+b.dataset.dn;[L[i+1],L[i]]=[L[i],L[i+1]]}
+    else if(b.dataset.rm){const c=L.splice(+b.dataset.rm,1)[0];const a=document.querySelector(`[data-add="${c}"]`);if(a){a.classList.remove('on');a.textContent='+ Ekle'}}
+    save();drawList();document.querySelectorAll('.add:not(.on)').forEach(x=>x.disabled=S.list.length>=MAX)});
+  $('view').addEventListener('click',e=>{if($('view').getAttribute('aria-disabled')){e.preventDefault()}});
+  $('clr').onclick=()=>{if(!S.list.length)return;S.list=[];save();drawList();document.querySelectorAll('.add.on').forEach(a=>{a.classList.remove('on');a.textContent='+ Ekle'});document.querySelectorAll('.add').forEach(x=>x.disabled=false);toast('Liste temizlendi.')};
+  $('pdf').onclick=async()=>{if(await confirmWarning('Onayla ve indir')){const st=curState();try{await downloadPdf(st,listUrl(st))}catch(e){toast('PDF oluşturulamadı. Bağlantını kontrol edip tekrar dene.')}}};
+  $('copy').onclick=async()=>{if(await confirmWarning('Onayla ve kopyala')){copyLink(listUrl(curState()))}};
+  // mobil alt çekmece
+  const ml=$('mylist');let shade=null;
+  const openSheet=()=>{ml.classList.add('open');shade=document.createElement('div');shade.className='shade';shade.onclick=closeSheet;document.body.appendChild(shade)};
+  const closeSheet=()=>{ml.classList.remove('open');shade&&shade.remove();shade=null};
+  $('mopen').onclick=()=>ml.classList.contains('open')?closeSheet():openSheet();
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&ml.classList.contains('open'))closeSheet()});
+  if(cur){setOn()}else{drawPickers()}
+  drawList();upd();
+})();
+</script>
+</body>
+</html>

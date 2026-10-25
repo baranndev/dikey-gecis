@@ -41,12 +41,12 @@
 .erow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:9px 0;border-top:1px solid var(--rule-2)}
 .erow:first-of-type{border-top:0}
 .erow .u{font-size:14px;font-weight:500;min-width:0}
-.erow .u small{display:block;font:11.5px var(--f-mono);color:var(--faint);font-weight:400}
+.erow .u small{display:block;font:11.5px var(--f-mono);color:var(--faint);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .erow .v{font:500 14px var(--f-mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--soft)}
 .erow .bar{grid-column:1/-1}
 .ex .more{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:1px dashed var(--rule);font-size:14px;color:var(--soft)}
 .ex .more a{color:var(--form);text-decoration:none;font-weight:600}
-.stamp{position:absolute;top:-14px;right:18px;background:var(--form);color:var(--on-form);font:600 11px var(--f-mono);letter-spacing:.08em;padding:6px 10px;border-radius:999px;transform:rotate(3deg)}
+.stamp{position:absolute;top:18px;right:18px;background:var(--form-soft);color:var(--form);font:600 10.5px var(--f-mono);letter-spacing:.08em;padding:4px 9px;border-radius:999px}
 
 .stats{border-block:1px solid var(--rule);background:var(--sheet)}
 .stats .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -83,6 +83,22 @@
 .fact p{margin:0;color:var(--soft);font-size:15px}
 
 .cta-band{margin-top:112px}
+.tl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:56px;align-items:center;background:var(--sheet);border:1px solid var(--rule);border-radius:24px;padding:clamp(24px,4vw,48px)}
+.tl h2{margin:14px 0 14px}
+.tli{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:10px;font-size:15px;color:var(--soft)}
+.tli li{display:flex;gap:10px;align-items:baseline}
+.tli li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--form);flex:none;transform:translateY(-1px)}
+.tli b{color:var(--ink);font-weight:600}
+.tlmock{padding:20px;background:var(--paper)}
+.tlm-h{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:12px;border-bottom:1px solid var(--rule)}
+.tlm-h b{font:600 17px var(--f-display)} .tlm-h span{font:600 12.5px var(--f-mono);color:var(--soft)}
+.tlm-i{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 0;border-bottom:1px dashed var(--rule)}
+.tlm-i i{font-style:normal;width:26px;height:26px;border-radius:50%;background:var(--form);color:var(--on-form);display:grid;place-items:center;font:600 12px var(--f-mono)}
+.tlm-i b{display:block;font-size:14px}.tlm-i small{font:12px var(--f-mono);color:var(--soft)}
+.tlm-f{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.tlm-n{margin:10px 0 0;font:11px var(--f-mono);color:var(--faint);text-align:right}
+@media (max-width:960px){.tl{grid-template-columns:minmax(0,1fr);gap:32px}}
+@media (max-width:480px){.tlm-i{grid-template-columns:26px minmax(0,1fr)}.tlm-i .st{grid-column:2}}
 .cta-band .in{background:var(--band);color:var(--on-band);border-radius:24px;padding:56px clamp(24px,5vw,64px);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:center;position:relative;overflow:hidden}
 .cta-band .in::after{content:"";position:absolute;right:-40px;top:-40px;width:320px;height:320px;pointer-events:none;
   background-image:radial-gradient(circle,transparent 4.2px,color-mix(in srgb,var(--on-band) 18%,transparent) 4.7px,color-mix(in srgb,var(--on-band) 18%,transparent) 5.6px,transparent 6.1px);background-size:24px 24px;
@@ -101,7 +117,7 @@
   .cta-band .in{grid-template-columns:minmax(0,1fr)}
   .sec{padding-top:80px}
 }
-@media (max-width:620px){.pops{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:620px){.pops{grid-template-columns:minmax(0,1fr)}.hero::before{opacity:.35;-webkit-mask-image:linear-gradient(180deg,#000,transparent 40%);mask-image:linear-gradient(180deg,#000,transparent 40%)}.ex .to{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 
 </style>
 </head>
@@ -112,6 +128,7 @@
     <a href="index.html#nasil" class="hide-sm">Nasıl çalışır</a>
     <a href="index.html#populer" class="hide-sm">Popüler bölümler</a>
     <a href="index.html#kaynak" class="hide-sm">Kaynak</a>
+    <a class="btn ghost sm" href="tercih.html">Tercih listesi</a>
     <a class="btn primary sm" href="sorgula.html">Sorgula</a>
   </nav>
 </div></header>
@@ -123,7 +140,7 @@
     <h1>Ön lisans bölümünü yaz, <span class="hl">geçebileceğin</span> tüm lisans programlarını gör.</h1>
     <p class="lead">852 ön lisans bölümü, 7.060 lisans programı. Kontenjanlar ve 2026 yerleştirmesindeki en küçük ve en büyük puanlar, tek listede.</p>
     <div class="search" role="search">
-      <div class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="hs" type="text" autocomplete="off" placeholder="Örn. Bilgisayar Programcılığı" aria-label="Ön lisans bölümü" role="combobox" aria-controls="hsl" aria-expanded="false" aria-autocomplete="list"><a class="btn primary" href="sorgula.html" id="hgo">Sorgula</a></div>
+      <div class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="hs" type="text" autocomplete="off" placeholder="Bölüm adını yaz…" aria-label="Ön lisans bölümü" role="combobox" aria-controls="hsl" aria-expanded="false" aria-autocomplete="list"><a class="btn primary" href="sorgula.html" id="hgo">Sorgula</a></div>
       <ul class="sugg" id="hsl" role="listbox" hidden></ul>
     </div>
     <div class="alt">Bölümünü bilmiyor musun? <a href="sorgula.html">Sorgulama sayfasına git →</a></div>
@@ -155,6 +172,19 @@
     <div class="fact"><h3>Puan türleri karışabilir</h3><p>Aynı bölümden SAY, EA ve SÖZ puanıyla öğrenci alan programlara geçilebilir. Puanları yalnızca aynı puan türü içinde karşılaştır.</p></div>
   </div>
 </div></section>
+
+<section class="sec" id="tercih"><div class="wrap"><div class="tl">
+  <div><span class="eyebrow">Yeni · Tercih listesi</span><h2>Puanını yaz, listeni hazırla, paylaş.</h2>
+  <p class="lead">DGS puanlarını, istediğin illeri ve üniversite türünü gir. Puanına uyan programları 2026 tabanlarıyla karşılaştır, 30 tercihe kadar listeni oluştur.</p>
+  <ul class="tli"><li><b>Durum etiketleri</b> · tabanın üstünde, sınırda, kontenjan dolmadı</li><li><b>Karekodlu PDF</b> · okutunca liste telefonda açılır</li><li><b>Paylaşılabilir bağlantı</b> · açan kişi listeni tüm ayrıntılarıyla görür</li></ul>
+  <a class="btn primary" href="tercih.html" style="margin-top:24px">Tercih listemi oluştur <span class="arr">→</span></a></div>
+  <div class="tlmock card" aria-hidden="true"><div class="tlm-h"><b>Tercih listem</b><span>3 / 30</span></div>
+    <div class="tlm-i"><i>1</i><div><b>Bilgisayar Mühendisliği</b><small>Taban 306,9 · +4,12</small></div><span class="st ok">Tabanın üstünde</span></div>
+    <div class="tlm-i"><i>2</i><div><b>Yazılım Mühendisliği</b><small>Taban 313,9 · −2,85</small></div><span class="st near">Sınırda</span></div>
+    <div class="tlm-i"><i>3</i><div><b>Yönetim Bilişim Sistemleri</b><small>2026'da boş kontenjan kaldı</small></div><span class="st open">Kontenjan dolmadı</span></div>
+    <div class="tlm-f"><span class="btn primary sm">PDF indir</span><span class="btn ghost sm">Bağlantıyı kopyala</span></div>
+    <p class="tlm-n">Örnek görünüm</p></div>
+</div></div></section>
 
 <section class="cta-band"><div class="wrap"><div class="in">
   <div><h2>Tercih listeni oluşturmaya başla.</h2><p>Bölümünü seç, geçebileceğin programları kontenjan ve puanlarıyla birlikte gör.</p></div>
@@ -192,8 +222,8 @@
   const P=eligible(ex).filter(p=>p[0]==='D'||(p[0]==='V'&&p[8]==='B'));
   const by={};P.forEach(p=>{(by[p[7]]=by[p[7]]||[]).push(p)});
   const rows=Object.entries(by).map(([a,L])=>{const m=L.map(p=>p[11]).filter(v=>v!=null);return {a,n:L.length,k:L.reduce((s,p)=>s+p[6],0),min:Math.min(...m),max:Math.max(...m)}}).sort((x,y)=>y.n-x.n);
-  document.getElementById('ex').innerHTML=`<span class="stamp">ÖRNEK</span><div class="from"><span>Ön lisans bölümü</span><b>${esc(ex[1])}</b></div><div class="to">Geçebileceği lisans alanları · devlet ve burslu vakıf</div>`+
-    rows.slice(0,5).map(r=>`<div class="erow"><div class="u">${esc(D.LA[r.a][0])}<small>${D.LA[r.a][1]} · ${r.n} program · ${r.k} kont.</small></div><div class="v">${f1(r.min)}–${f1(r.max)}</div>${rangeBar(D.LA[r.a][1],r.min,r.max,'thin grow')}</div>`).join('')+
+  document.getElementById('ex').innerHTML=`<span class="stamp">ÖRNEK</span><div class="from"><span>Ön lisans bölümü</span><b>${esc(ex[1])}</b></div><div class="to">Geçebileceği alanlar · devlet + burslu vakıf</div>`+
+    rows.slice(0,5).map(r=>`<div class="erow"><div class="u">${esc(D.LA[r.a][0])}<small>${D.LA[r.a][1]} · ${r.n} prog. · ${r.k} kont.</small></div><div class="v">${f1(r.min)}–${f1(r.max)}</div>${rangeBar(D.LA[r.a][1],r.min,r.max,'thin grow')}</div>`).join('')+
     `<div class="more"><span>+${rows.length-5} alan daha · toplam ${P.length} program</span><a href="${queryUrl('sonuc.html',{o:'1121'})}" data-o="1121">Hepsini gör →</a></div>`;
   document.querySelectorAll('#ex .rg').forEach((e,i)=>e.style.animationDelay=(.15+i*.08)+'s');
   // istatistikler

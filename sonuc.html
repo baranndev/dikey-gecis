@@ -27,7 +27,8 @@
 .rhead .sub{color:var(--soft);margin:0;max-width:76ch}
 .chipset{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
 .chipset span{font:500 12.5px var(--f-body);padding:4px 10px;border-radius:999px;background:var(--sheet);border:1px solid var(--rule);color:var(--soft)}
-.chipset span.ao{border-style:dashed}
+.aonote{flex-basis:100%;margin:6px 0 0;font-size:13.5px;color:var(--soft);padding:10px 12px;border:1px dashed var(--form);border-radius:10px}
+.aonote b{color:var(--form);font-weight:600}
 .kpis{display:flex;gap:32px;flex-wrap:wrap;margin-top:24px}
 .kpis div{display:flex;flex-direction:column;gap:2px}
 .kpis b{font:700 30px/1 var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
@@ -69,6 +70,7 @@
 .mini.b{background:var(--form-soft);color:var(--form)}
 .mini.ao{background:transparent;border:1px dashed var(--form);color:var(--form)}
 .mini.kos{background:transparent;border:1px solid var(--rule);color:var(--faint)}
+.mini.code-m{display:none}
 .sc{display:flex;flex-direction:column;gap:4px;min-width:0}
 .sc .nums{display:flex;justify-content:space-between;font:12.5px var(--f-mono);font-variant-numeric:tabular-nums}
 .sc .nums b{font-weight:500}
@@ -81,10 +83,16 @@
 .empty p{margin:0;color:var(--soft)}
 @media (max-width:760px){
   .colh{display:none}
-  .p{grid-template-columns:minmax(0,1fr) auto;gap:8px 14px}
-  .p .cd{order:3}
-  .p .sc{grid-column:1/-1;order:4}
-  .kpis{gap:20px}
+  .p{grid-template-columns:minmax(0,1fr) auto;gap:10px 16px;align-items:start}
+  .p .cd{display:none}
+  .mini.code-m{display:inline-block}
+  .p .kt{padding-top:2px}
+  .p .sc{grid-column:1/-1}
+  .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  .uh{display:block}
+  .uh h2{display:inline;margin-right:8px}
+  .uh .tag{vertical-align:3px}
+  .uh .s{display:block;margin-top:4px}
   .grpbar{top:calc(env(safe-area-inset-top,0px) + 64px)}
 }
 
@@ -97,6 +105,7 @@
     <a href="index.html#nasil" class="hide-sm">Nasıl çalışır</a>
     <a href="index.html#populer" class="hide-sm">Popüler bölümler</a>
     <a href="index.html#kaynak" class="hide-sm">Kaynak</a>
+    <a class="btn ghost sm" href="tercih.html">Tercih listesi</a>
     <a class="btn primary sm" href="sorgula.html">Sorgula</a>
   </nav>
 </div></header>
@@ -151,7 +160,8 @@
   const kl=[...st.k].map(k=>({B:'burslu',I:'indirimli',U:'ücretli'}[k])).join(', ');
   const sl={uni:'üniversiteye göre',alan:'lisans alanına göre',min:'taban puana göre (yüksekten)',minA:'taban puana göre (düşükten)',k:'kontenjana göre'}[st.s]||'üniversiteye göre';
   document.getElementById('sub').textContent=`${tl} üniversiteleri${(st.t.includes('V')||st.t.includes('K'))?` · vakıf/KKTC: ${kl||'kontenjan türü seçilmedi'}`:''}${st.q?` · “${st.q}” araması`:''} · ${sl} sıralı`;
-  document.getElementById('chips').innerHTML=alans.map(a=>`<span class="${o[2].includes(a)?'':'ao'}">${esc(D.LA[a][0])}${o[2].includes(a)?'':' · yalnızca açıköğretim'}</span>`).join('');
+  const gA=alans.filter(a=>o[2].includes(a)),aA=alans.filter(a=>!o[2].includes(a));
+  document.getElementById('chips').innerHTML=gA.map(a=>`<span>${esc(D.LA[a][0])}</span>`).join('')+(aA.length?`<p class="aonote"><b>Yalnızca açıköğretimde:</b> ${aA.map(a=>esc(D.LA[a][0])).join(', ')}</p>`:'');
   document.title=`${o[1]} · Dikey Geçiş`;
   const ql=low(st.q||'');
   const R=eligible(o,aSet).filter(p=>st.t.includes(p[0])&&(p[8]===''||st.k.includes(p[8][0]))&&(!ql||low(D.U[p[1]]+' '+p[4]+' '+p[3]).includes(ql)));
@@ -160,7 +170,7 @@
     const one=r[11]!=null&&r[11]===r[12];
     const bak=r[9]?`<span class="mini kos" title="Kılavuzdaki Bakınızlar numaraları">Koşul ${esc(r[9])}</span>`:'';
     return `<div class="p"><div class="nm">${showUni?`<span class="u">${esc(D.U[r[1]])} <span class="tag ${r[0]==='D'?'D':'V'}">${TYPE[r[0]]}</span></span>`:''}
-      <b>${esc(r[4])}</b><span class="meta"><span class="mini">${r[5]}</span>${r[8]==='B'?'<span class="mini b">Burslu</span>':''}${isAO(r)?'<span class="mini ao" title="Bu programa bölümünden yalnızca açıköğretim fakültesinde olduğu için geçebilirsin">Yalnızca açıköğretimde geçerli</span>':''}${bak}<span class="mini" style="background:none;padding-left:0">${esc(D.F[r[2]]||'')}</span></span></div>
+      <b>${esc(r[4])}</b><span class="meta"><span class="mini">${r[5]}</span>${r[8]==='B'?'<span class="mini b">Burslu</span>':''}${isAO(r)?'<span class="mini ao" title="Bu programa bölümünden yalnızca açıköğretim fakültesinde olduğu için geçebilirsin">Yalnızca açıköğretimde geçerli</span>':''}${bak}<span class="mini code-m">${r[3]}</span><span class="mini" style="background:none;padding-left:0">${esc(D.F[r[2]]||'')}</span></span></div>
       <div class="cd">${r[3]}</div><div class="kt">${r[6]}<small>KONT.</small></div>
       <div class="sc">${r[11]==null?`<span class="none">Yerleşen yok</span>`:`<div class="nums"><b>${f3(r[11])}</b><span>${one?'tek yerleşen':f3(r[12])}</span></div>${rangeBar(r[5],r[11],r[12],'thin')}`}</div></div>`}
   let shown=0;const PAGE=60;let groups=[];
