@@ -34,6 +34,8 @@ function rangeBar(cls,a,b,extra=''){
   const L=pos(a),W=Math.max(pos(b)-pos(a),0);
   return `<div class="bar ${cls} ${extra}"><div class="tr"></div><div class="rg" style="left:${L.toFixed(2)}%;width:${W.toFixed(2)}%"></div></div>`;
 }
+// geçmiş yıllar (assets/gecmis.js yüklüyse): [{y:2025,r:[kont,yerleşen,enKüçük,enBüyük]|0}, ...]
+const hist=c=>typeof H==='undefined'?[]:H.Y.map((y,i)=>({y,r:(H.P[c]||[])[i]||0}));
 // sorgu durumu
 const DEF={o:'',a:null,t:'DV',k:'B',q:'',s:'uni'};
 function readQuery(){

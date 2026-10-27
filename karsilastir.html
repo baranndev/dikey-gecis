@@ -91,7 +91,7 @@ table.cmp{border-collapse:collapse;width:100%;min-width:680px;font-size:14.5px}
     <div>
       <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
       <p>Ön lisans bölümüne göre 2026 DGS ile geçilebilecek lisans programlarını, kontenjanlarını ve yerleştirme puanlarını tek yerde toplayan bağımsız bir bilgi sayfası.</p>
-      <p><b>Kaynak:</b> ÖSYM 2026-DGS Tercih Kılavuzu Tablo-1 (Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Lisans Programları), Tablo-2 (Ön Lisans Mezuniyet Alanlarına Göre Dikey Geçiş Yapılabilecek Lisans Programları) ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
+      <p><b>Kaynak:</b> ÖSYM 2026-DGS Tercih Kılavuzu Tablo-1 (Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Lisans Programları), Tablo-2 (Ön Lisans Mezuniyet Alanlarına Göre Dikey Geçiş Yapılabilecek Lisans Programları) ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar. Geçmiş yıllar: 2023, 2024 ve 2025 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
       <p>Program koşulları ("Bakınızlar" numaraları) için kılavuzdaki açıklamalara bakılmalıdır.</p>
       <nav class="flinks" aria-label="Site haritası"><a href="sorgula.html">Program sorgula</a><a href="tercih.html">Tercih listesi</a><a href="bolumler.html">Tüm ön lisans bölümleri</a><a href="kesfet.html">Keşfet</a><a href="harita.html">Harita</a><a href="karsilastir.html">Karşılaştır</a></nav>
     </div>
@@ -107,6 +107,7 @@ table.cmp{border-collapse:collapse;width:100%;min-width:680px;font-size:14.5px}
   <div class="copy"><span>Veri: ÖSYM · 2026 DGS</span><span>Resmi kaynak değildir</span></div>
 </div></footer>
 <script src="assets/data.js"></script>
+<script src="assets/gecmis.js"></script>
 <script src="assets/common.js"></script>
 <script src="assets/ui.js"></script>
 <script src="assets/liste.js"></script>
@@ -144,11 +145,12 @@ table.cmp{border-collapse:collapse;width:100%;min-width:680px;font-size:14.5px}
       ${row('Kontenjan',p=>p[6],x=>x,1,true)}
       ${row('Yerleşen (2026)',p=>p[10],x=>x??'–',0,true)}
       ${row('Boş kalan',bos,x=>x??'–',0,true)}
-      ${row('En küçük puan',p=>p[11],x=>x==null?'Yerleşen yok':f3(x),-1,true)}
-      ${row('En büyük puan',p=>p[12],f3,0,true)}
+      ${row('En küçük puan (2026)',p=>p[11],x=>x==null?'Yerleşen yok':f3(x),-1,true)}
+      ${row('En büyük puan (2026)',p=>p[12],f3,0,true)}
+      ${hist('').map(({y},i)=>row(`En küçük · en büyük (${y})`,p=>{const x=hist(p[3])[i].r;return !x?'Kayıt yok':(x[2]==null?'Yerleşen yok':f3(x[2])+' · '+f3(x[3]))+(x[4]?' *':'')},x=>x,0,true)).join('')}
       ${row('Koşullar',p=>p[9]||'Yok',esc)}
       ${row('Açıköğretim',p=>p[13]?'Evet':'Hayır')}
-    </tbody></table></div><p class="note2">Yeşil hücre: en yüksek kontenjan ve en düşük taban (girmesi daha kolay). Puanları yalnızca aynı puan türü içinde karşılaştır.</p>`;
+    </tbody></table></div><p class="note2">Yeşil hücre: en yüksek kontenjan ve en düşük taban (girmesi daha kolay). Puanları yalnızca aynı puan türü içinde karşılaştır. * O yıl program farklı bir program koduyla yer almıştır.</p>`;
   }
   $('out').addEventListener('click',e=>{const b=e.target.closest('[data-rm]');if(b){const c=b.dataset.rm;CMP.toggle(c,'')}});
   document.addEventListener('cmpchange',render);
