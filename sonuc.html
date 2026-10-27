@@ -88,10 +88,14 @@
 .mini.kos{background:transparent;border:1px solid var(--rule);color:var(--faint)}
 .mini.code-m{display:none}
 .sc{display:flex;flex-direction:column;gap:4px;min-width:0}
-.sc .nums{display:flex;justify-content:space-between;font:12.5px var(--f-mono);font-variant-numeric:tabular-nums}
+.sc .nums{display:grid;grid-template-columns:2.6rem minmax(0,1fr) minmax(0,1fr);gap:0 8px;font:12.5px var(--f-mono);font-variant-numeric:tabular-nums}
 .sc .nums b{font-weight:500}
-.sc .nums span{color:var(--faint)}
-.sc .none{font:12px var(--f-mono);color:var(--faint)}
+.sc .nums span{color:var(--faint);text-align:right}
+.sc .yr{font-style:normal;color:var(--faint);font-size:11px;align-self:center}
+.sc .hist{display:grid;grid-template-columns:2.6rem minmax(0,1fr) minmax(0,1fr);gap:2px 8px;margin-top:4px;padding-top:6px;border-top:1px dashed var(--rule-2);font:11.5px var(--f-mono);font-variant-numeric:tabular-nums;color:var(--soft)}
+.sc .hist i{font-style:normal;color:var(--faint);font-size:11px}
+.sc .hist em{font-style:normal;text-align:right;color:var(--faint)}
+.sc .hist .na{grid-column:2/4;color:var(--faint)}.sc .none{font:12px var(--f-mono);color:var(--faint)}
 .colh{display:grid;grid-template-columns:minmax(0,1fr) 6rem 4rem minmax(0,15rem);gap:20px;padding:16px 0 0;font:10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
 .colh span:nth-child(3){text-align:right}
 .empty{padding:80px 0;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}
@@ -146,7 +150,7 @@
     <div>
       <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
       <p>Ön lisans bölümüne göre 2026 DGS ile geçilebilecek lisans programlarını, kontenjanlarını ve yerleştirme puanlarını tek yerde toplayan bağımsız bir bilgi sayfası.</p>
-      <p><b>Kaynak:</b> ÖSYM 2026-DGS Tercih Kılavuzu Tablo-1 (Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Lisans Programları), Tablo-2 (Ön Lisans Mezuniyet Alanlarına Göre Dikey Geçiş Yapılabilecek Lisans Programları) ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
+      <p><b>Kaynak:</b> ÖSYM 2026-DGS Tercih Kılavuzu Tablo-1 (Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Lisans Programları), Tablo-2 (Ön Lisans Mezuniyet Alanlarına Göre Dikey Geçiş Yapılabilecek Lisans Programları) ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar. Geçmiş yıllar: 2023, 2024 ve 2025 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
       <p>Program koşulları ("Bakınızlar" numaraları) için kılavuzdaki açıklamalara bakılmalıdır.</p>
       <nav class="flinks" aria-label="Site haritası"><a href="sorgula.html">Program sorgula</a><a href="tercih.html">Tercih listesi</a><a href="bolumler.html">Tüm ön lisans bölümleri</a><a href="kesfet.html">Keşfet</a><a href="harita.html">Harita</a><a href="karsilastir.html">Karşılaştır</a></nav>
     </div>
@@ -162,6 +166,7 @@
   <div class="copy"><span>Veri: ÖSYM · 2026 DGS</span><span>Resmi kaynak değildir</span></div>
 </div></footer>
 <script src="assets/data.js"></script>
+<script src="assets/gecmis.js"></script>
 <script src="assets/common.js"></script>
 <script src="assets/ui.js"></script>
 <script>
@@ -192,7 +197,11 @@
     return `<div class="p"><div class="nm">${showUni?`<span class="u">${esc(D.U[r[1]])} <span class="tag ${r[0]==='D'?'D':'V'}">${TYPE[r[0]]}</span></span>`:''}
       <b><a class="pl" href="${progUrl(r[3])}">${esc(r[4])}</a></b><span class="meta"><span class="mini">${r[5]}</span>${r[8]==='B'?'<span class="mini b">Burslu</span>':''}${isAO(r)?'<span class="mini ao" title="Bu programa bölümünden yalnızca açıköğretim fakültesinde olduğu için geçebilirsin">Yalnızca açıköğretimde geçerli</span>':''}${bak}<span class="mini code-m">${r[3]}</span><button type="button" class="cmpbtn" data-cmp="${r[3]}" aria-pressed="${CMP.has(r[3])}">${CMP.has(r[3])?'✓ Karşılaştırmada':'+ Karşılaştır'}</button><span class="mini" style="background:none;padding-left:0">${esc(D.F[r[2]]||'')}</span></span></div>
       <div class="cd">${r[3]}</div><div class="kt">${r[6]}<small>KONT.</small></div>
-      <div class="sc">${r[11]==null?`<span class="none">Yerleşen yok</span>`:`<div class="nums"><b>${f3(r[11])}</b><span>${one?'tek yerleşen':f3(r[12])}</span></div>${rangeBar(r[5],r[11],r[12],'thin')}`}</div></div>`}
+      <div class="sc">${r[11]==null?`<div class="nums"><i class="yr">2026</i><span class="none" style="text-align:left;grid-column:2/4">Yerleşen yok</span></div>`:`<div class="nums"><i class="yr">2026</i><b>${f3(r[11])}</b><span>${one?'tek yerleşen':f3(r[12])}</span></div>${rangeBar(r[5],r[11],r[12],'thin')}`}${histRows(r)}</div></div>`}
+  // geçmiş yıllar: her yıl için en küçük · en büyük puan
+  function histRows(r){
+    const h=hist(r[3]);if(!h.some(x=>x.r))return '';
+    return `<div class="hist" aria-label="Geçmiş yılların en küçük ve en büyük puanları">${h.map(({y,r:x})=>`<i${x&&x[4]?` title="${y} yılında farklı program koduyla (${x[4]}) yer aldı"`:''}>${y}${x&&x[4]?'*':''}</i>${!x?'<span class="na">Kayıt yok</span>':x[2]==null?'<span class="na">Yerleşen yok</span>':`<span>${f3(x[2])}</span><em>${x[2]===x[3]?'tek yerleşen':f3(x[3])}</em>`}`).join('')}</div>`}
   let shown=0;const PAGE=60;let groups=[];
   function build(){
     if(st.s==='uni'||st.s==='alan'||!st.s){
@@ -218,7 +227,7 @@
     if(!R.length){out.innerHTML=`<div class="empty"><b>Bu seçimle eşleşen program yok.</b><p>Lisans alanlarını, üniversite türünü veya aramayı değiştirip tekrar dene.</p><a class="btn primary" href="${queryUrl('sorgula.html',st)}">Sorguyu düzenle</a></div>`;return}
     const pts=[...new Set(R.map(r=>r[5]))];
     out.innerHTML=`<div class="kpis"><div><b>${tr(R.length)}</b><span>Program</span></div><div><b>${tr(new Set(R.map(r=>r[1])).size)}</b><span>Üniversite</span></div><div><b>${tr(R.reduce((s,r)=>s+r[6],0))}</b><span>Kontenjan</span></div><div><b>${new Set(R.map(r=>r[7])).size}</b><span>Lisans alanı</span></div></div>
-    <div class="legend2">${pts.map(p=>`<span><i class="sw ${p}"></i>${p} puanı</span>`).join('')}<span>Çubuk: en küçük–en büyük yerleşen puanı (ölçek ${LO}–${HI})</span></div>
+    <div class="legend2">${pts.map(p=>`<span><i class="sw ${p}"></i>${p} puanı</span>`).join('')}<span>Çubuk: 2026 en küçük–en büyük yerleşen puanı (ölçek ${LO}–${HI})</span><span>Altında: 2025, 2024 ve 2023 yerleştirmelerinin puanları (* o yıl farklı program koduyla)</span></div>
     <div class="colh"><span>Program</span><span>Kod</span><span>Kont.</span><span>En küçük · en büyük puan</span></div><div id="list"></div><div class="more"><button class="btn ghost" id="morebtn" hidden></button></div>`;
     build();drawMore();
     document.getElementById('morebtn').onclick=drawMore;

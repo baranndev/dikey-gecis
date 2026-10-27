@@ -63,6 +63,17 @@
 .mypt{display:flex;gap:10px;align-items:center;margin-top:16px;flex-wrap:wrap}
 .mypt input{width:140px;background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:9px 12px;font:500 15px var(--f-mono)}
 .mypt .out{font-size:14px;color:var(--soft)}
+.yrs{margin-top:20px;background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:22px}
+.yrs h2{font-size:18px;margin-bottom:6px}
+.yrs p{margin:0 0 14px;color:var(--soft);font-size:14px}
+.yrs .tw{overflow-x:auto}
+.yrs table{width:100%;border-collapse:collapse;font:13.5px var(--f-mono);font-variant-numeric:tabular-nums}
+.yrs th{font:10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint);text-align:right;padding:0 10px 8px;font-weight:400;white-space:nowrap}
+.yrs th:first-child,.yrs td:first-child{text-align:left;padding-left:0}
+.yrs td{padding:10px;border-top:1px solid var(--rule-2);text-align:right;white-space:nowrap}
+.yrs tr.cur td{font-weight:600}
+.yrs td.na{color:var(--faint);text-align:left}
+.yrs .bar{min-width:110px}
 .two{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:28px;margin-top:48px;align-items:start}
 .box{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:22px}
 .box h2{font-size:20px;margin-bottom:6px}
@@ -112,6 +123,7 @@
       <div class="pacts"><button type="button" class="btn ghost sm" id="cmp" aria-pressed="false">+ Karşılaştır</button><button type="button" class="btn ghost sm" id="addl">+ Tercih listeme ekle</button><button type="button" class="btn ghost sm" id="share">Bağlantıyı kopyala</button></div>
       <div class="kgrid" id="kg"></div>
       <div class="scale" id="sc"></div>
+      <div class="yrs" id="yrs"></div>
     </div>
     <div class="two">
       <div class="box"><h2>Bu programa hangi bölümlerden geçilir?</h2><p id="srcp"></p><div class="srcs" id="srcs"></div></div>
@@ -127,7 +139,7 @@
     <div>
       <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
       <p>Ön lisans bölümüne göre 2026 DGS ile geçilebilecek lisans programlarını, kontenjanlarını ve yerleştirme puanlarını tek yerde toplayan bağımsız bir bilgi sayfası.</p>
-      <p><b>Kaynak:</b> ÖSYM 2026-DGS Tercih Kılavuzu Tablo-1 (Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Lisans Programları), Tablo-2 (Ön Lisans Mezuniyet Alanlarına Göre Dikey Geçiş Yapılabilecek Lisans Programları) ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
+      <p><b>Kaynak:</b> ÖSYM 2026-DGS Tercih Kılavuzu Tablo-1 (Merkezi Yerleştirme ile Dikey Geçiş Yapılacak Lisans Programları), Tablo-2 (Ön Lisans Mezuniyet Alanlarına Göre Dikey Geçiş Yapılabilecek Lisans Programları) ve 2026 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar. Geçmiş yıllar: 2023, 2024 ve 2025 DGS Yerleştirme Sonuçlarına İlişkin En Küçük ve En Büyük Puanlar.</p>
       <p>Program koşulları ("Bakınızlar" numaraları) için kılavuzdaki açıklamalara bakılmalıdır.</p>
       <nav class="flinks" aria-label="Site haritası"><a href="sorgula.html">Program sorgula</a><a href="tercih.html">Tercih listesi</a><a href="bolumler.html">Tüm ön lisans bölümleri</a><a href="kesfet.html">Keşfet</a><a href="harita.html">Harita</a><a href="karsilastir.html">Karşılaştır</a></nav>
     </div>
@@ -143,6 +155,7 @@
   <div class="copy"><span>Veri: ÖSYM · 2026 DGS</span><span>Resmi kaynak değildir</span></div>
 </div></footer>
 <script src="assets/data.js"></script>
+<script src="assets/gecmis.js"></script>
 <script src="assets/common.js"></script>
 <script src="assets/ui.js"></script>
 <script src="assets/liste.js"></script>
@@ -178,6 +191,15 @@
   }
   let my=null;try{const t=JSON.parse(localStorage.getItem('dg-tercih'));my=t&&t.sc?t.sc[p[5]]??null:null}catch(e){}
   drawScale(my);
+  // yıllara göre puanlar
+  const yrs=[{y:2026,r:[p[6],p[10],p[11],p[12]],cur:1},...hist(p[3])];
+  // tabloya özel ölçek: yılların en düşük–en yüksek puanına göre
+  const yv=yrs.filter(x=>x.r&&x.r[2]!=null).flatMap(x=>[x.r[2],x.r[3]]);
+  const ylo=Math.floor((Math.min(...yv)-2)/5)*5,yhi=Math.ceil((Math.max(...yv)+2)/5)*5;
+  const yp=v=>(v-ylo)/(yhi-ylo)*100;
+  const yBar=(a,b)=>`<div class="bar thin ${p[5]}" title="${f1(a)}–${f1(b)}"><div class="tr"></div><div class="rg" style="left:${yp(a).toFixed(2)}%;width:${Math.max(yp(b)-yp(a),0).toFixed(2)}%"></div></div>`;
+  $('yrs').innerHTML=`<h2>Yıllara göre puanlar</h2><p>${hist(p[3]).some(x=>x.r)?'Bu programın 2023–2026 DGS yerleştirmelerindeki kontenjanı, yerleşen sayısı ve en küçük–en büyük puanları.'+(hist(p[3]).some(x=>x.r&&x.r[4])?' Altında kod yazan yıllarda program farklı bir program koduyla yer almıştır.':''):'Bu program için 2023–2025 yıllarına ait yerleştirme kaydı bulunamadı (yeni açılmış veya adı değişmiş olabilir).'}</p>
+    <div class="tw"><table><thead><tr><th>Yıl</th><th>Kont.</th><th>Yerleşen</th><th>En küçük</th><th>En büyük</th><th style="text-align:left">Aralık${yv.length?` (${ylo}–${yhi})`:''}</th></tr></thead><tbody>${yrs.map(({y,r,cur})=>`<tr class="${cur?'cur':''}"><td>${y}${r&&r[4]?`<small style="display:block;font-size:10.5px;color:var(--faint);font-weight:400">kod ${r[4]}</small>`:''}</td>${!r?'<td class="na" colspan="5">Bu yıl kayıt yok (program açılmamış veya farklı adla yer almış olabilir)</td>':`<td>${r[0]}</td><td>${r[1]??'–'}</td>${r[2]==null?'<td class="na" colspan="3">Yerleşen olmadı</td>':`<td>${f3(r[2])}</td><td>${f3(r[3])}</td><td>${yBar(r[2],r[3])}</td>`}`}</tr>`).join('')}</tbody></table></div>`;
   // kaynak bölümler
   const src=sourcesOf(p).sort((a,b)=>coll.compare(a[1],b[1]));
   const gen=src.filter(o=>o[2].includes(p[7]));
