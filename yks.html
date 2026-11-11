@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>YKS Tercih Robotu · Dikey Geçiş</title>
+<meta name="description" content="YKS puanını yaz, 2026 taban puanlarına ve 2021–2026 trendine göre yerleşebileceğin önlisans ve lisans programlarını gör.">
+<link rel="canonical" href="https://baranndev.github.io/dikey-gecis/yks.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Dikey Geçiş Rehberi">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="YKS Tercih Robotu · Dikey Geçiş">
+<meta property="og:description" content="YKS puanını yaz, yerleşebileceğin önlisans ve lisans programlarını 2026 puanlarıyla gör.">
+<meta property="og:url" content="https://baranndev.github.io/dikey-gecis/yks.html">
+<meta property="og:image" content="https://baranndev.github.io/dikey-gecis/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="YKS Tercih Robotu · Dikey Geçiş">
+<meta name="twitter:description" content="YKS puanını yaz, yerleşebileceğin programları gör.">
+<meta name="twitter:image" content="https://baranndev.github.io/dikey-gecis/og.png">
+<meta name="theme-color" content="#c23a57">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dikey Geçiş">
+<script>try{var t=localStorage.getItem('dg-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+
+/* başlık + panel (tercih sayfasıyla aynı dil) */
+.thead{padding-block:48px 24px}
+.thead h1{font-size:clamp(34px,4.8vw,58px);line-height:1.02;font-weight:700;letter-spacing:-.03em;margin:14px 0 12px}
+.thead .lead{color:var(--soft);margin:0;max-width:76ch}
+.panel{background:var(--sheet);border:1px solid var(--rule);border-radius:20px;box-shadow:var(--shadow);margin-bottom:12px}
+.blk{padding:22px 24px;border-top:1px solid var(--rule-2);display:flex;flex-direction:column;gap:14px}
+.blk:first-child{border-top:0}
+.blk h2{font-size:17px;letter-spacing:-.01em;display:flex;gap:12px;align-items:center}
+.blk h2 .n{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--form);color:var(--form);display:grid;place-items:center;font:600 12px var(--f-mono);flex:none}
+.blk .note{font-size:13px;color:var(--soft);margin:0}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{flex:1;min-width:60px;padding:10px 6px;border:1px solid var(--rule);background:var(--paper);border-radius:10px;font:600 14px var(--f-body);cursor:pointer;color:var(--ink)}
+.seg button.on{background:var(--form);border-color:var(--form);color:var(--on-form)}
+.frow{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.sfld{display:flex;flex-direction:column;gap:6px}
+.sfld label{font:600 12px var(--f-mono);letter-spacing:.06em;color:var(--soft)}
+.sfld input,.sfld select{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;font:500 15px var(--f-body);min-width:0;width:100%}
+.sfld input[inputmode=decimal]{font:500 17px var(--f-mono);font-variant-numeric:tabular-nums}
+.sfld input:focus,.sfld select:focus{outline:2px solid var(--form);outline-offset:1px}
+.chips2{display:flex;gap:6px;flex-wrap:wrap}
+.chips2 .ch{font:500 13px var(--f-body);padding:6px 11px;border-radius:999px;background:var(--paper);border:1px solid var(--rule);color:var(--soft);cursor:pointer}
+.chips2 .ch.on{background:var(--form-soft);border-color:var(--form);color:var(--form);font-weight:600}
+
+/* sonuç başlığı + kpi (sonuc.html ile aynı) */
+.kpis{display:flex;gap:32px;flex-wrap:wrap;margin:24px 0 2px}
+.kpis div{display:flex;flex-direction:column;gap:2px}
+.kpis b{font:700 30px/1 var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.kpis span{font:11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.legend2{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font:12px var(--f-mono);color:var(--soft)}
+.legend2 span{display:inline-flex;gap:6px;align-items:center}
+.grpbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px);z-index:4;background:var(--paper);display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--rule);margin-top:18px}
+.grpbar select{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;padding:8px 12px;font-size:14px}
+.grpbar .c{font:12px var(--f-mono);color:var(--soft)}
+
+/* program satırı (sonuc.html ile birebir) */
+.colh{display:grid;grid-template-columns:minmax(0,1fr) 6rem 4rem minmax(0,15rem);gap:20px;padding:16px 0 0;font:10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.colh span:nth-child(3){text-align:right}
+.p{display:grid;grid-template-columns:minmax(0,1fr) 6rem 4rem minmax(0,15rem);gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--rule-2)}
+.p .nm{min-width:0;display:flex;flex-direction:column;gap:3px}
+.p .nm .u{font-size:12.5px;color:var(--soft);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.p .nm b{font-weight:500}
+.p .nm .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.p .kt{font:500 16px var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.p .kt small{display:block;font:10px var(--f-mono);color:var(--faint);letter-spacing:.06em}
+.p .vd{text-align:right}
+.mini{font:500 10.5px var(--f-mono);padding:2px 7px;border-radius:5px;background:var(--track);color:var(--soft);white-space:nowrap}
+.mini.b{background:var(--form-soft);color:var(--form)}
+.mini.code-m{display:none}
+.v-ok{background:#e8f6ee;color:#1f7a46}.v-mid{background:#fbf3df;color:#8a6a12}.v-risk{background:#fbeee6;color:#b2501f}.v-no{background:#fbe9eb;color:#9f2c45}
+html[data-theme=dark] .v-ok{background:#16351f;color:#79d79f}html[data-theme=dark] .v-mid{background:#3a3214;color:#e4c36a}html[data-theme=dark] .v-risk{background:#3a2418;color:#e9a579}html[data-theme=dark] .v-no{background:#3a1b20;color:#e98a97}
+.sc{display:flex;flex-direction:column;gap:4px;min-width:0}
+.sc .nums{display:grid;grid-template-columns:2.6rem minmax(0,1fr) minmax(0,1fr);gap:0 8px;font:12.5px var(--f-mono);font-variant-numeric:tabular-nums}
+.sc .nums b{font-weight:500}
+.sc .nums span{color:var(--faint);text-align:right}
+.sc .yr{font-style:normal;color:var(--faint);font-size:11px;align-self:center}
+.sc .hist{display:grid;grid-template-columns:2.6rem minmax(0,1fr) minmax(0,1fr);gap:2px 8px;margin-top:4px;padding-top:6px;border-top:1px dashed var(--rule-2);font:11.5px var(--f-mono);font-variant-numeric:tabular-nums;color:var(--soft)}
+.sc .hist i{font-style:normal;color:var(--faint);font-size:11px}
+.sc .hist em{font-style:normal;text-align:right;color:var(--faint)}
+.sc .hist .na{grid-column:2/4;color:var(--faint)}
+.sc .none{font:12px var(--f-mono);color:var(--faint)}
+.bar.TYT .rg{background:var(--form)} .bar.DİL .rg{background:var(--blue)}
+.uni{padding-top:26px}
+.uh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.uh h2{font-size:17px;line-height:1.3;letter-spacing:-.005em}
+.uh .s{margin-left:auto;font:12px var(--f-mono);color:var(--soft)}
+.more{display:flex;justify-content:center;padding:30px 0}
+.empty{padding:70px 0;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+.empty b{font:600 20px var(--f-display)}.empty p{margin:0;color:var(--soft)}
+.hint{padding:60px 0;text-align:center;color:var(--soft);font-size:14.5px}
+@media (max-width:760px){
+  .colh{display:none}
+  .p{grid-template-columns:minmax(0,1fr) auto;gap:10px 16px;align-items:start}
+  .mini.code-m{display:inline-block}
+  .p .kt{padding-top:2px}
+  .p .vd{grid-column:1/-1;text-align:left}
+  .p .sc{grid-column:1/-1}
+  .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  .uh{display:block}.uh .s{display:block;margin-top:4px}
+}
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap">
+  <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
+  <nav aria-label="Ana menü" class="links"><a href="bolumler.html">Bölümler</a><a href="kesfet.html">Keşfet</a><a href="harita.html">Harita</a><a href="karsilastir.html">Karşılaştır</a><a href="yks.html" aria-current="page">YKS</a></nav>
+  <div class="nact">
+    <button type="button" class="iconbtn" id="themebtn" aria-label="Karanlık modu aç/kapat"><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+    <a class="btn ghost sm hide-xs" href="tercih.html">DGS Tercih</a>
+    <a class="btn primary sm" href="sorgula.html">Sorgula</a>
+    <button type="button" class="iconbtn menubtn" id="menubtn" aria-label="Menüyü aç" aria-expanded="false" aria-controls="mmenu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</div>
+<nav class="mmenu" id="mmenu" aria-label="Mobil menü" hidden><div class="wrap"><a href="index.html">Ana sayfa</a><a href="yks.html" aria-current="page">YKS Tercih Robotu</a><a href="sorgula.html">DGS Program sorgula</a><a href="tercih.html">DGS Tercih listesi</a><a href="bolumler.html">Bölümler</a><a href="kesfet.html">Keşfet</a><a href="harita.html">Harita</a><a href="karsilastir.html">Karşılaştır</a></div></nav>
+</header>
+
+<main class="wrap">
+<div class="thead">
+  <span class="eyebrow">YKS Tercih Robotu</span>
+  <h1>Puanını yaz, yerleşebileceğin programları gör.</h1>
+  <p class="lead">Puan türünü ve YKS puanını gir; 2026 taban puanlarına göre uygun önlisans ve lisans programlarını, 2021–2026 trendiyle birlikte listele. Veriler ÖSYM'nin kamuya açık tablolarından derlenmiştir; resmî kaynak değildir.</p>
+</div>
+
+<form class="panel" id="ff" novalidate>
+  <div class="blk">
+    <h2><span class="n">1</span>Puan türün ve puanın</h2>
+    <div class="seg" id="pt">
+      <button type="button" data-pt="TYT" class="on">TYT</button>
+      <button type="button" data-pt="SAY">SAY</button>
+      <button type="button" data-pt="EA">EA</button>
+      <button type="button" data-pt="SÖZ">SÖZ</button>
+      <button type="button" data-pt="DİL">DİL</button>
+    </div>
+    <div class="frow">
+      <div class="sfld"><label for="puan">YKS puanın</label><input id="puan" inputmode="decimal" autocomplete="off" placeholder="örn. 342,75"></div>
+      <div class="sfld"><label for="tur">Program türü</label><select id="tur"><option value="">Hepsi (önlisans + lisans)</option><option value="0">Önlisans (2 yıllık)</option><option value="1">Lisans (4 yıllık)</option></select></div>
+      <div class="sfld"><label for="utur">Üniversite türü</label><select id="utur"><option value="">Hepsi</option><option value="DEVLET">Devlet</option><option value="VAKIF">Vakıf</option><option value="KKTC">KKTC</option></select></div>
+      <div class="sfld"><label for="q">Program / üniversite ara</label><input id="q" type="search" autocomplete="off" placeholder="örn. bilgisayar, hemşirelik"></div>
+    </div>
+    <p class="note">Yalnızca seçtiğin puan türündeki programlar listelenir. Taban puanlar her yıl kayabilir; robot en güncel yılın tabanını referans alır, 6 yıllık trendi kartta gösterir.</p>
+  </div>
+  <div class="blk">
+    <h2><span class="n">2</span>Şehir <span style="font:500 11px var(--f-mono);letter-spacing:.06em;color:var(--soft)">· isteğe bağlı</span></h2>
+    <div class="chips2" id="cities"></div>
+  </div>
+</form>
+
+<div id="result" aria-live="polite"></div>
+<div id="hint" class="hint">Puanını yaz, programları listeleyelim.</div>
+</main>
+
+<footer class="foot" id="kaynak"><div class="wrap">
+  <div class="grid">
+    <div>
+      <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--form)"/><g fill="var(--on-form)"><rect x="9" y="8.5" width="13" height="3" rx="1.5"/><rect x="12" y="14.5" width="12" height="3" rx="1.5"/><rect x="7" y="20.5" width="9" height="3" rx="1.5"/></g></svg><span>Dikey Geçiş</span></a>
+      <p>YKS puanına göre yerleşebileceğin önlisans ve lisans programlarını, kontenjanlarını ve taban puanlarını tek yerde toplayan bağımsız bir araç.</p>
+      <p><b>Kaynak:</b> ÖSYM "Merkezi Yerleştirme İle Öğrenci Alan Yükseköğretim Programları — En Küçük ve En Büyük Puanlar" tabloları (Tablo-3 önlisans, Tablo-4 lisans), 2021–2026.</p>
+      <nav class="flinks" aria-label="Site haritası"><a href="yks.html">YKS Tercih Robotu</a><a href="sorgula.html">DGS Program sorgula</a><a href="tercih.html">DGS Tercih listesi</a><a href="bolumler.html">Ön lisans bölümleri</a><a href="kesfet.html">Keşfet</a></nav>
+    </div>
+    <div class="legal" role="note"><h3>Yasal uyarı</h3><ul>
+      <li>Bu sayfadaki veriler ÖSYM'nin kamuya açık yayımladığı belgelerden derlenmiştir. Sayfa ÖSYM ile bağlantılı değildir ve resmî bir kaynak değildir.</li>
+      <li>Veriler otomatik aktarılmıştır; hata veya eksiklik olabilir. Kesin doğruluk garanti edilmez.</li>
+      <li>Eşleştirme puana göredir; başarı sırası (sıralama) bu veri setinde yoktur.</li>
+      <li>Geçmiş yılların taban puanları sonraki yerleştirmelerin sonucunu göstermez.</li>
+      <li>Güncel ve bağlayıcı bilgi için <a href="https://www.osym.gov.tr" target="_blank" rel="noopener">osym.gov.tr</a> kılavuz ve tablolarını kontrol edin.</li>
+    </ul></div>
+  </div>
+  <div class="copy"><span>Veri: ÖSYM · 2021–2026</span><span>Resmî kaynak değildir</span></div>
+</div></footer>
+
+<script>
+const LO=150,HI=560;
+const pos=v=>Math.max(0,Math.min(100,(v-LO)/(HI-LO)*100));
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const f2=v=>v==null?'–':v.toLocaleString('tr',{minimumFractionDigits:2,maximumFractionDigits:2});
+const tr=n=>n.toLocaleString('tr');
+const low=s=>String(s).toLocaleLowerCase('tr');
+const norm=s=>low(s).replace(/[çğıöşüâîû]/g,c=>({'ç':'c','ğ':'g','ı':'i','ö':'o','ş':'s','ü':'u','â':'a','î':'i','û':'u'}[c])).replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim();
+function rangeBar(cls,a,b){
+  if(a==null) return `<div class="bar ${cls} thin"><div class="tr"></div></div>`;
+  const L=pos(a),W=Math.max(pos(b)-pos(a),0);
+  return `<div class="bar ${cls} thin"><div class="tr"></div><div class="rg" style="left:${L.toFixed(2)}%;width:${W.toFixed(2)}%"></div></div>`;
+}
+const BIG=["İstanbul","Ankara","İzmir","Bursa","Antalya","Kocaeli","Konya","Adana","Eskişehir","Gaziantep","Kayseri","Samsun","Trabzon","Sakarya","Mersin","KKTC"];
+const PAGE=60;
+const State={pt:"TYT",puan:null,tur:"",utur:"",q:"",cities:new Set(),shown:0};
+let DATA=null,BY_PT={},CUR=[];
+
+function latest(h){for(let i=0;i<h.length;i++){const e=h[i];if(e!==0&&e[2]!=null)return{enk:e[2],enb:e[3],kont:e[0],yer:e[1],year:DATA.years[i],idx:i};}return null;}
+function verdict(diff,enb,puan){
+  if(diff==null)return null;
+  if(puan>=enb)return{c:"v-ok",t:"Çok rahat"};
+  if(diff>=12)return{c:"v-ok",t:"Rahat"};
+  if(diff>=4)return{c:"v-ok",t:"Güvenli"};
+  if(diff>=0)return{c:"v-mid",t:"Sınırda"};
+  if(diff>=-6)return{c:"v-risk",t:"Riskli"};
+  return{c:"v-no",t:"Zor"};
+}
+function histRows(h,pt){
+  const rows=[];
+  for(let i=1;i<h.length;i++){const e=h[i],y=DATA.years[i];
+    if(e===0){rows.push(`<i>${y}</i><span class="na">Kayıt yok</span>`);}
+    else if(e[2]==null){rows.push(`<i>${y}</i><span class="na">Yerleşen yok</span>`);}
+    else{rows.push(`<i>${y}</i><span>${f2(e[2])}</span><em>${e[2]===e[3]?'tek':f2(e[3])}</em>`);}
+  }
+  return `<div class="hist" aria-label="Geçmiş yıllar">${rows.join('')}</div>`;
+}
+function compute(){
+  const pool=BY_PT[State.pt]||[],puan=State.puan,q=norm(State.q);
+  const out=[];
+  for(const p of pool){
+    if(State.tur!==""&&String(p[6])!==State.tur)continue;
+    const utur=DATA.T[p[3]];
+    if(State.utur){if(State.utur==="KKTC"){if(!utur.startsWith("KKTC"))continue;}else if(utur!==State.utur)continue;}
+    const city=DATA.C[p[2]];
+    if(State.cities.size&&!State.cities.has(city))continue;
+    const uni=DATA.U[p[1]];
+    if(q&&!(norm(p[4]).includes(q)||norm(uni).includes(q)))continue;
+    const h=DATA.H[p[0]],ref=h?latest(h):null;
+    let diff=null,v=null;
+    if(ref&&puan!=null){diff=puan-ref.enk;v=verdict(diff,ref.enb,puan);}
+    out.push({p,uni,city,utur,ref,diff,v,h});
+  }
+  let r=out;
+  if(puan!=null)r=out.filter(x=>x.v&&x.v.t!=="Zor");
+  r.sort((a,b)=>(b.ref?b.ref.enk:-1)-(a.ref?a.ref.enk:-1));
+  return r;
+}
+function prow(r){
+  const turtag=r.p[6]===0?"Önlisans":"Lisans";
+  const ut=r.utur.replace("YURTDISI ","Yurtdışı ").replace("DEVLET","Devlet").replace("VAKIF","Vakıf");
+  const kont=r.ref?r.ref.kont:0;
+  return `<div class="p">
+    <div class="nm"><b>${esc(r.p[4])}</b>
+      <span class="u"><span class="mini">${r.p[5]}</span><span class="mini">${turtag}</span><span>${esc(r.uni)}</span></span>
+      <span class="meta"><span class="mini">${ut}</span><span class="mini">${esc(r.city)}</span></span>
+    </div>
+    <div class="kt">${kont?tr(kont):'–'}<small>KONT.</small></div>
+    <div class="vd">${r.v?`<span class="mini ${r.v.c}">${r.v.t}</span>`:''}${r.diff!=null?`<div style="font:11px var(--f-mono);color:var(--faint);margin-top:4px">${r.diff>=0?'+':''}${f2(r.diff)}</div>`:''}</div>
+    <div class="sc">
+      ${r.ref?`<div class="nums"><i class="yr">${r.ref.year}</i><b>${f2(r.ref.enk)}</b><span>${r.ref.enk===r.ref.enb?'tek':f2(r.ref.enb)}</span></div>${rangeBar(r.p[5],r.ref.enk,r.ref.enb)}`:`<div class="nums"><i class="yr">${DATA.years[0]}</i><span class="none" style="grid-column:2/4;text-align:left">Yerleşen yok</span></div>`}
+      ${r.h?histRows(r.h,r.p[5]):''}
+    </div>
+  </div>`;
+}
+function render(reset){
+  const box=document.getElementById("result"),hint=document.getElementById("hint");
+  if(reset){State.shown=0;CUR=compute();}
+  if(State.puan==null&&!State.q&&!State.cities.size&&State.tur===""&&State.utur===""){
+    box.innerHTML="";hint.style.display="block";hint.textContent="Puanını yaz, programları listeleyelim.";return;
+  }
+  hint.style.display="none";
+  if(!CUR.length){box.innerHTML=`<div class="empty"><b>Bu seçimle eşleşen program yok.</b><p>Puanı, puan türünü veya filtreleri değiştirip tekrar dene.</p></div>`;return;}
+  const uniq=new Set(CUR.map(r=>r.p[1])).size, totKont=CUR.reduce((s,r)=>s+(r.ref?r.ref.kont:0),0);
+  const slice=CUR.slice(0,State.shown+PAGE);State.shown=slice.length;
+  const kpi=`<div class="kpis"><div><b>${tr(CUR.length)}</b><span>Program</span></div><div><b>${tr(uniq)}</b><span>Üniversite</span></div><div><b>${tr(totKont)}</b><span>Kontenjan</span></div></div>
+    <div class="legend2"><span>Çubuk: ${DATA.years[0]} en küçük–en büyük puan (ölçek ${LO}–${HI})</span><span>Altında: ${DATA.years[1]}–${DATA.years[DATA.years.length-1]} taban puanları</span></div>
+    <div class="colh"><span>Program</span><span>Kont.</span><span>Durum</span><span>Taban puan</span></div>`;
+  const rows=slice.map(prow).join("");
+  const more=State.shown<CUR.length?`<div class="more"><button type="button" class="btn ghost" id="moreb">Daha fazla göster (${tr(CUR.length-State.shown)} program kaldı)</button></div>`:"";
+  box.innerHTML=kpi+rows+more;
+  const mb=document.getElementById("moreb");if(mb)mb.onclick=()=>render(false);
+}
+function buildCities(){
+  const box=document.getElementById("cities");
+  BIG.forEach(c=>{if(!DATA.C.includes(c))return;
+    const el=document.createElement("button");el.type="button";el.className="ch";el.textContent=c;
+    el.onclick=()=>{el.classList.toggle("on");State.cities.has(c)?State.cities.delete(c):State.cities.add(c);render(true);};
+    box.appendChild(el);});
+}
+function wire(){
+  document.querySelectorAll("#pt button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#pt button").forEach(x=>x.classList.remove("on"));b.classList.add("on");State.pt=b.dataset.pt;render(true);});
+  const deb=(fn,ms=200)=>{let t;return()=>{clearTimeout(t);t=setTimeout(fn,ms);};};
+  document.getElementById("puan").oninput=deb(()=>{const v=parseFloat(document.getElementById("puan").value.replace(',','.'));State.puan=isNaN(v)?null:v;render(true);});
+  document.getElementById("q").oninput=deb(()=>{State.q=document.getElementById("q").value;render(true);});
+  document.getElementById("tur").onchange=e=>{State.tur=e.target.value;render(true);};
+  document.getElementById("utur").onchange=e=>{State.utur=e.target.value;render(true);};
+  document.getElementById("ff").addEventListener("submit",e=>e.preventDefault());
+}
+fetch("yks.json").then(r=>r.json()).then(d=>{
+  DATA=d;BY_PT={};for(const p of d.P){(BY_PT[p[5]]=BY_PT[p[5]]||[]).push(p);}
+  buildCities();wire();
+}).catch(e=>{document.getElementById("hint").textContent="Veri yüklenemedi: "+e;});
+</script>
+<script src="assets/ui.js"></script>
+</body>
+</html>
